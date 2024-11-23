@@ -3,7 +3,7 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="java.io.*" %>
    
-<%
+<%		// git test
     // 데이터베이스 연결 정보
     String dbURL = "jdbc:mysql://localhost:3306/weddingondb"; // 데이터베이스 URL
     String dbUser = "root"; // MySQL 사용자 이름
