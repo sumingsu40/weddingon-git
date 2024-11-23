@@ -1,0 +1,62 @@
+@charset "UTF-8";
+/* styles.css */
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #FFD8E4; /* FFD8E4 색상으로 전체 배경 적용 */
+    font-family: Arial, sans-serif;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.login-box {
+    background-color: #FCE0EC; /* 로고 테두리 및 로그인 창 배경 */
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    width: 400px; /* 너비를 400px로 확대 */
+}
+
+.logo {
+    width: 120px; /* 로고 크기 확대 */
+    margin-bottom: 30px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 15px; /* 입력 필드 크기 확대 */
+    margin-bottom: 20px;
+    border: 3px solid #F6CDCD; /* 입력창 테두리 색상 */
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px; /* 글씨 크기 확대 */
+}
+
+.login-button {
+    width: 100%;
+    padding: 15px; /* 버튼 크기 확대 */
+    background-color: #F6CDCD; /* 로그인 버튼 색상 */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px; /* 글씨 크기 확대 */
+    color: #333;
+}
+
+.signup-link {
+    margin-top: 15px;
+}
+
+.signup-link a {
+    color: #555;
+    text-decoration: none;
+}
