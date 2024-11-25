@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>캘린더</title>
+    <link rel="stylesheet" href="calendar.css">
+    <script src="calendar.js" defer></script>
+</head>
+<body>
+    <div class="calendar">
+        <div class="calendar-header">
+            <button id="prevMonth" class="nav-button">◀</button>
+            <span id="currentMonthYear" class="month-year">2024년 11월</span>
+            <button id="nextMonth" class="nav-button">▶</button>
+        </div>
+        <table class="calendar-table">
+            <thead>
+                <tr>
+                    <th>일</th>
+                    <th>월</th>
+                    <th>화</th>
+                    <th>수</th>
+                    <th>목</th>
+                    <th>금</th>
+                    <th>토</th>
+                </tr>
+            </thead>
+            <tbody id="calendarBody">
+                <!-- JavaScript will dynamically populate dates here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 팝업 -->
+    <iframe id="popupFrame" class="hidden"></iframe>
+</body>
+</html>
