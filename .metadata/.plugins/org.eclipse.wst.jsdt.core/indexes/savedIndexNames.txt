@@ -1,8 +1,0 @@
-INDEX VERSION 1.4+C:\2024\24-2\웹프로그래밍\weddingon-git\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
-1236796681.index
-4253085294.index
-1733792542.index
-632575941.index
-3239521111.index
-1538207623.index
-2884670887.index
