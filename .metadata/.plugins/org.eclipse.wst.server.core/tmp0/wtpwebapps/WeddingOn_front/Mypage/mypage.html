@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>My Page</title>
+    <link rel="stylesheet" type="text/css" href="mypage.css">
+    <script src="mypage.js" defer></script>
+</head>
+<body>
+<!-- 가장 메인 -->
+    <div class="top_bar">
+        <img class="logo" src="../images/weddingon-logo.png">
+        <div class="d_day">D-30</div>
+        <img class="logout" src="images/logout-icon.png">
+    </div>
+    <div class="sidebar">
+        <div class="menu_item selected" data-target="Like.html">관심 업체</div>
+        <div class="menu_item" data-target="chat.html">채팅방</div>
+        <div class="menu_item" data-target="calendar.html">캘린더</div>
+        <div class="menu_item" data-target="mywriting.html">내가 쓴 글</div>
+    </div>
+    <div class="content">
+    <iframe id="contentFrame" src="like.html" frameborder="0" style="width:100%; height:calc(100vh - 96px);"></iframe>
+	</div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const menuItems = document.querySelectorAll(".menu_item");
+            const iframe = document.getElementById("contentFrame");
+
+            menuItems.forEach((menuItem) => {
+                menuItem.addEventListener("click", () => {
+                    menuItems.forEach((item) => item.classList.remove("selected"));
+                    menuItem.classList.add("selected");
+                    const targetPage = menuItem.getAttribute("data-target");
+                    iframe.src = targetPage;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
+

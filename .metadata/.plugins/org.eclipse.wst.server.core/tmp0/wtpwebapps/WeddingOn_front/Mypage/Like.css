@@ -1,0 +1,46 @@
+@charset "UTF-8";
+.company {
+    display: flex;
+    align-items: center;
+    background-color: #FFF5F8;
+    margin-bottom: 16px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.company:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.profile {
+    width: 60px;
+    height: 60px;
+    background-color: #ECECEC;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #666;
+    margin-right: 20px;
+}
+
+.name {
+    flex: 1;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.like img {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.like img:hover {
+    transform: scale(1.2);
+}
