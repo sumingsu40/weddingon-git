@@ -12,7 +12,7 @@
     <div class="login-container">
         <div class="login-box">
             <img src="images/logo.jpg" alt="Wedding.on 로고" class="logo">
-            <form action="login-check.jsp"> <!-- 추가하슈 -->
+            <form action="login-check.jsp"> <!-- 추가하슈 test -->
                 <input type="text" name="id" placeholder="아이디" class="input-field" required>
                 <input type="password" name="password" placeholder="비밀번호" class="input-field" required>
                 <button type="submit" class="login-button">로그인</button>
