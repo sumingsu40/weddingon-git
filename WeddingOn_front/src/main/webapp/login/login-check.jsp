@@ -40,7 +40,7 @@
             // 로그인 성공
             message = "로그인 성공! 환영합니다, " + rs.getString("id") + "님!";
             session.setAttribute("user", rs.getString("id")); // 세션에 사용자 정보 저장
-            response.sendRedirect("index.jsp"); // 메인 페이지로 이동
+            response.sendRedirect("../Main-loadmap/index.jsp"); // 메인 페이지로 이동
         } else {
             // 로그인 실패
             message = "로그인 실패: 아이디 또는 비밀번호가 일치하지 않습니다.";

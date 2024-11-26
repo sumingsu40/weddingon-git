@@ -14,8 +14,12 @@
 			<input class="search_icon" type="text" name="company_name">
 			<button type="submit" class="search_button">search</button>
 		</form>
-		<img class="logo" src="../images/weddingon-logo.png">
-		<img class="Mypage" src="../images/mypage-icon.png">
+		<a herf="index.jsp">
+			<img class="logo" src="../images/weddingon-logo.png">
+		</a>
+		<a href="../Mypage/mypage.html">
+            <img class="Mypage" src="../images/mypage-icon.png" alt="마이페이지">
+        </a>
 	</div>
 
 	<div class="menu_bar">

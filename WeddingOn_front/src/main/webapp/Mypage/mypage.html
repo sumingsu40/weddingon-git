@@ -9,19 +9,23 @@
 <body>
 <!-- 가장 메인 -->
     <div class="top_bar">
-        <img class="logo" src="../images/weddingon-logo.png">
+        <a href="../Main-loadmap/index.jsp">
+            <img class="logo" src="../images/weddingon-logo.png">
+        </a>
         <div class="d_day">D-30</div>
-        <img class="logout" src="images/logout-icon.png">
+        <img class="logout" src="../images/logout-icon.png">
     </div>
     <div class="sidebar">
+        <!-- '관심 업체' 메뉴에 초기 상태에서 selected 클래스 추가 -->
         <div class="menu_item selected" data-target="Like.html">관심 업체</div>
         <div class="menu_item" data-target="chat.html">채팅방</div>
         <div class="menu_item" data-target="calendar.html">캘린더</div>
         <div class="menu_item" data-target="mywriting.html">내가 쓴 글</div>
     </div>
     <div class="content">
-    <iframe id="contentFrame" src="like.html" frameborder="0" style="width:100%; height:calc(100vh - 96px);"></iframe>
-	</div>
+        <!-- iframe의 초기 src를 'Like.html'로 설정 -->
+        <iframe id="contentFrame" src="Like.html" frameborder="0" style="width:100%; height:calc(100vh - 96px);"></iframe>
+    </div>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const menuItems = document.querySelectorAll(".menu_item");

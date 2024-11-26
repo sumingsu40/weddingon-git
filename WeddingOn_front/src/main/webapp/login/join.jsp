@@ -8,11 +8,10 @@
     <link rel="stylesheet" href="join.css">
 </head>
 <body>
-   <!-- 3트 -->
     <div class="join-container">
         <div class="join-box">
-            <img src="../images/logo.jpg" alt="Wedding.on 로고" class="logo">	
-            <form action="signup-db.jsp" method="post">
+            <img src="../images/weddingon-logo.png" alt="Wedding.on 로고" class="logo">
+            <form action="signup-db.jsp" method="post" onsubmit="return validateForm();">
                 <div class="input-group">
                     <label for="name">이름</label>
                     <input type="text" id="name" name="name" class="input-field" required>
@@ -30,7 +29,7 @@
                 </div>
 
                 <div class="input-group">
-                    <label for="confirm-password">비밀번호확인</label>
+                    <label for="confirm-password">비밀번호 확인</label>
                     <input type="password" id="confirm-password" name="confirmPassword" class="input-field" required>
                 </div>
 
@@ -50,7 +49,7 @@
                 </div>
 
                 <div class="input-group">
-                    <label for="wedding-date">결혼예상날짜</label>
+                    <label for="wedding-date">결혼 예상 날짜</label>
                     <input type="date" id="wedding-date" name="weddingDate" class="input-field">
                 </div>
 
@@ -60,6 +59,7 @@
     </div>
 
     <script>
+        // 중복확인 버튼 로직
         function checkDuplicate() {
             const username = document.getElementById('username').value;
             if (username) {
@@ -67,6 +67,19 @@
             } else {
                 alert("아이디를 입력해주세요.");
             }
+        }
+
+        // 비밀번호 확인 로직
+        function validateForm() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            if (password !== confirmPassword) {
+                alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+                return false; // 폼 전송 중단
+            }
+
+            return true; // 폼 전송 허용
         }
     </script>
 </body>
