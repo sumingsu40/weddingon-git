@@ -3,11 +3,11 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="java.io.*" %>
    
-<%		// git test
+<%	
     // 데이터베이스 연결 정보
-    String dbURL = "jdbc:mysql://localhost:3306/weddingondb"; // 데이터베이스 URL
-    String dbUser = "root"; // MySQL 사용자 이름
-    String dbPassword = "0000"; // MySQL 비밀번호
+    String dbURL = "jdbc:mysql://weddingondb.cni2gssosrpi.ap-southeast-2.rds.amazonaws.com:3306/weddingonDB?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
+    String dbUser = "admin";
+    String dbPassword = "solution";
 
     // 로그인 폼에서 전달받은 값
     String userId = request.getParameter("id");

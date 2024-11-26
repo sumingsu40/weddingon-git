@@ -1,21 +1,21 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*"%>
 <%@ page import="java.io.*"%>
 
 <%
 	//데이터베이스 연결 정보
-	String dbURL = "jdbc:mysql://localhost:3306/weddingondb"; // 데이터베이스 URL
-	String dbUser = "root"; // MySQL 사용자 이름
-	String dbPassword = "0000"; // MySQL 비밀번호
+	String dbURL = "jdbc:mysql://weddingondb.cni2gssosrpi.ap-southeast-2.rds.amazonaws.com:3306/weddingonDB?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
+    String dbUser = "admin";
+    String dbPassword = "solution";
 	
+    request.setCharacterEncoding("UTF-8");
 	String name = request.getParameter("name");
-	String id = request.getParameter("id");
+	String id = request.getParameter("username");
 	String pwd = request.getParameter("password");
-	String phoneNum = request.getParameter("phoneNum");
+	String phoneNum = request.getParameter("phone");
 	String email = request.getParameter("email");
-	String birthDate = request.getParameter("birthday");
-	String weddingDate = request.getParameter("weddingdate");
+	String birthDate = request.getParameter("birthdate");
+	String weddingDate = request.getParameter("weddingDate");
 	
 	Connection conn = null;
     PreparedStatement pstmt = null;
