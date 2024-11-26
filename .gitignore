@@ -4,3 +4,5 @@ weddingOn_front/build/
 weddingOn_front/.setting/
 weddingOn_front/.classpath
 weddingOn_front/.project
+/.Server/
+weddingOn_front/.gitignore
