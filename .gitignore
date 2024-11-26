@@ -1,2 +1,6 @@
-/.metadata/
-weddingon/.metadata/
+/.metadata/ 
+weddingOn_front/.metadata/ 
+weddingOn_front/build/
+weddingOn_front/.setting/
+weddingOn_front/.classpath
+weddingOn_front/.project
