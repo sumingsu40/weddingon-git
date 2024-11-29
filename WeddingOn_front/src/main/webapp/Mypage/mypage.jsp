@@ -87,6 +87,9 @@
         </a>
         <div class="d_day"><%=dDayMessage %></div>
         <img class="logout" src="images/logout-icon.png">
+        <a href="logout.jsp">
+        	<img class="logout" src="images/logout-icon.png">
+        </a>
     </div>
     <div class="sidebar">
         <div class="menu_item selected" data-target="like.jsp">관심 업체</div>
@@ -96,7 +99,7 @@
         <div class="menu_item" data-target="setting.html">개인정보</div> <!-- 개인정보 메뉴 추가 -->
     </div>
     <div class="content">
-        <iframe id="contentFrame" src="./Like.jsp" frameborder="0" style="width:100%; height:calc(100vh - 96px);"></iframe>
+        <iframe id="contentFrame" src="./like.jsp" frameborder="0" style="width:100%; height:calc(100vh - 96px);"></iframe>
     </div>
     <script>
     document.addEventListener("DOMContentLoaded", () => {

@@ -1,5 +1,17 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page session="true" %>
+<%
+    String userId = (String) session.getAttribute("userId");
+    if (userId == null) {
+        // 로그인되지 않은 상태 -> 로그인 페이지로 이동
+        response.sendRedirect("../login/login.jsp");
+        return;
+    }
+    else {
+    	System.out.println("index userId: " + userId);
+    }
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,8 +45,12 @@
 			<input class="search_icon" type="text" name="company_name">
 			<button type="submit" class="search_button">search</button>
 		</form>
-		<img class="logo" src="../images/weddingon-logo.png" alt="로고">
-		<img class="mypage" src="../images/mypage-icon.png" alt="마이페이지 아이콘">
+		<a href="index.jsp">
+			<img class="logo" src="../images/weddingon-logo.png" alt="로고">
+		</a>
+		<a href="../Mypage/mypage.jsp">
+			<img class="mypage" src="../images/mypage-icon.png" alt="마이페이지 아이콘">
+		</a>
 	</div>
 
 	<!-- 메뉴 바 -->
