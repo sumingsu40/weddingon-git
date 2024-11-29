@@ -89,6 +89,7 @@
 </style>
 </head>
 <body>
+
 	<div class="top_bar">
 		<form class="search_container" method="post">
 			<input class="search_icon" type="text" name="company_name">
@@ -234,8 +235,72 @@
                         });
                     }
                 });
+
             });
         });
-    </script>
+
+        document.querySelector('.tab').click();
+    
+    // 리뷰 폼 제출 이벤트
+    document.getElementById('reviewForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // 기본 폼 제출 방지
+
+        // 폼 데이터 가져오기
+        const traffic = document.querySelector('input[name="traffic"]').value;
+        const parking = document.querySelector('input[name="parking"]').value;
+        const ambiance = document.querySelector('input[name="ambiance"]').value;
+        const price = document.querySelector('input[name="price"]').value;
+        const location = document.querySelector('input[name="location"]').value;
+        const reviewText = document.querySelector('textarea[name="reviewText"]').value;
+     
+        // 새로운 리뷰 요소 생성
+        const reviewContainer = document.createElement('div');
+        reviewContainer.className = 'submitted-review';
+        reviewContainer.innerHTML = `
+            <p><strong>교통:</strong> ${traffic}, <strong>주차:</strong> ${parking}, 
+            <strong>분위기:</strong> ${ambiance}, <strong>가격:</strong> ${price}, 
+            <strong>위치:</strong> ${location}</p>
+            <p>${reviewText}</p>
+            <hr>
+        `;
+
+        // 작성된 리뷰 추가
+        document.getElementById('submitted-reviews').appendChild(reviewContainer);
+
+        // 폼 초기화
+        event.target.reset();
+    });
+    
+ // 두 하트를 동기화하여 함께 작동하도록 설정
+    document.querySelectorAll('.heart-icon img').forEach(icon => {
+        icon.addEventListener('click', () => {
+            const allIcons = document.querySelectorAll('.heart-icon img'); // 모든 하트 아이콘 가져오기
+            const isFilled = icon.getAttribute('src') === '../images/fullheart.png';
+            const newSrc = isFilled ? '../images/heart.png' : '../images/fullheart.png';
+
+            // 모든 하트 아이콘의 src를 동기화
+            allIcons.forEach(icon => {
+                icon.setAttribute('src', newSrc);
+            });
+        });
+    });
+
+ // 후기 더보기 버튼 클릭 시 "후기" 탭으로 이동
+    document.getElementById("moreReviewsButton").addEventListener("click", () => {
+        // 모든 탭의 활성화 클래스 제거
+        document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
+        document.querySelectorAll(".content-area").forEach(content => content.classList.remove("active"));
+
+        // "후기" 탭 활성화
+        const reviewTab = document.querySelector(".tab[data-target='#reviews']");
+        const reviewContent = document.getElementById("reviews");
+        reviewTab.classList.add("active");
+        reviewContent.classList.add("active");
+
+        // "후기" 섹션으로 스크롤 이동
+        reviewContent.scrollIntoView({ behavior: "smooth" });
+    });
+</script>
+    
 </body>
 </html>
