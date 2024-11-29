@@ -1,18 +1,19 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>웨딩홀 페이지</title>
-    <link rel="stylesheet" type="text/css" href="companyClick.css">
-    <style>
-        /* 활성화된 탭 스타일 */
-        .tab.active {
-            background: #F9BBBB;
-            font-weight: bold;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>웨딩홀 페이지</title>
+<link rel="stylesheet" type="text/css" href="companyClick.css">
+<style>
+/* 활성화된 탭 스타일 */
+.tab.active {
+	background: #F9BBBB;
+	font-weight: bold;
+}
+</style>
 </head>
 <body>
     <!-- 상단 검색바 -->
@@ -231,6 +232,7 @@
                 const target = document.querySelector(tab.getAttribute('data-target'));
                 target.classList.add('active');
                 target.scrollIntoView({ behavior: 'smooth' });
+
             });
         });
 
