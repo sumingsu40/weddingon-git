@@ -1,9 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*" %>
-<%@ page import="java.time.*" %>
-<%@ page import="java.time.temporal.ChronoUnit" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*"%>
+<%@ page import="java.time.*"%>
+<%@ page import="java.time.temporal.ChronoUnit"%>
 
-<%@ page session="true" %>
+<%@ page session="true"%>
 
 
 <%
@@ -15,7 +16,7 @@
         response.getWriter().println("<h1>올바른 회사 정보가 없습니다.</h1>");
         return;
     }
-%>	
+%>
 
 <%
     // 데이터베이스 연결 정보
@@ -95,23 +96,22 @@
 			<input class="search_icon" type="text" name="company_name">
 			<button type="submit" class="search_button">search</button>
 		</form>
-		<a href="index.jsp">
-			<img class="logo" src="../images/weddingon-logo.png" alt="로고">
-		</a>
-		<a href="../Mypage/mypage.jsp">
-			<img class="mypage" src="../images/mypage-icon.png" alt="마이페이지 아이콘">
+		<a href="index.jsp"> <img class="logo"
+			src="../images/weddingon-logo.png" alt="로고">
+		</a> <a href="../Mypage/mypage.jsp"> <img class="mypage"
+			src="../images/mypage-icon.png" alt="마이페이지 아이콘">
 		</a>
 	</div>
 
 	<!-- 메뉴바 -->
 	<div class="menu_bar">
 		<div class="menu_item" data-page="community.html">
-			<img class="menu_icon" src="../images/community-icon.png" alt="커뮤니티 아이콘">
-			<span>커뮤니티</span>
+			<img class="menu_icon" src="../images/community-icon.png"
+				alt="커뮤니티 아이콘"> <span>커뮤니티</span>
 		</div>
 		<div class="menu_item" data-page="../MenuClick/hall.jsp">
-			<img class="menu_icon" src="../images/weddinghall-icon.png" alt="식장 아이콘">
-			<span>식장</span>
+			<img class="menu_icon" src="../images/weddinghall-icon.png"
+				alt="식장 아이콘"> <span>식장</span>
 		</div>
 		<div class="menu_item" data-page="../MenuClick/studio.jsp">
 			<img class="menu_icon" src="../images/studio-icon.png" alt="스튜디오 아이콘">
@@ -133,46 +133,73 @@
 
 	<!-- 첫 번째 화면 -->
 	<div class="container">
-
 		<div class="photos">
-			<!-- 
-			<div class="photo-main">사진 삽입란</div> 
-			<div class="photo-side">사진더보기</div>
-			-->
-			
 			<img src="<%= mainPhoto %>" alt="이미지" class="main-photo">
-			
 		</div>
+		<div class="container2">
+			<div class="left-section">
+				<div class="details">
+					<h2 id="wedding-hall-name"><%= companyName %></h2>
+					<hr class="section-divider">
+					<p id="address"><%= address %></p>
+					<p id="description"><%= description %></p>
+					<div class="basic-info">
+						<p>
+							<strong>홀 타입:</strong> <span id="hall-type">일반홀, 하우스</span>
+						</p>
+						<p>
+							<strong>메뉴 유형:</strong> <span id="menu-type">뷔페</span>
+						</p>
+						<p>
+							<strong>대관료:</strong> <span id="rental-fee">3000만원</span>
+						</p>
+						<p>
+							<strong>식사 비용:</strong> <span id="meal-cost">77,000원</span>
+						</p>
+						<p>
+							<strong>보증 인원:</strong> <span id="capacity">최소 200명, 최대
+								420명</span>
+						</p>
+						<p>
+							<strong>가능 행사:</strong> <span id="events">웨딩</span>
+						</p>
+					</div>
+				</div>
+			</div>
 
-		<div class="details-review-section">
-			<div class="details">
-				<h2><%= companyName %></h2>
-			    <p><%= address %></p>
-			    <p><%= description %></p>
-				<!-- 버튼 컨테이너 -->
-				<div class="like-share-buttons">
+			<div class="right-section">
+				<div class="action-buttons">
 					<button class="chat-btn">채팅 하기</button>
-					<img src="images/heart.png" alt="찜 버튼" class="heart-icon"> <img
-						src="images/share.png" alt="공유 버튼" class="share-icon">
+					<div class="heart-icon">
+						<!-- heart-icon 클래스를 추가 -->
+						<img src="../images/heart.png" alt="찜 버튼" />
+					</div>
+					<img src="../images/share.png" alt="공유 버튼" class="share-icon" />
 				</div>
-			</div>
-			<div class="reviews">
-				<h3>평점: <%= rating %></h3>
-				<p>1300건의 후기</p>
-				
-				<div class="review-box">
-					<div class="review">“너무 좋아용”</div>
-					<div class="review">“직원분들이 매우 친절해요”</div>
+				<div class="map-container">
+					<img src="../images/map-placeholder.png" alt="지도" class="map-image" />
+					<p>
+						위치 평점: <span id="location-rating">9.3</span><br /> <span
+							id="location-description">도심에 위치</span>
+					</p>
 				</div>
-				<button class="more-reviews">후기 더보기</button>
+				<div class="reviews">
+					<h3>
+						<span id="overall-rating">5.0</span> 최우수 <span id="review-count">(1300건의
+							후기)</span>
+					</h3>
+					<div class="review-box">
+						<div class="review" id="review-1">“너무 좋아용”</div>
+						<div class="review" id="review-2">“직원분들이 매우 친절해요”</div>
+					</div>
+					<button class="more-reviews" id="moreReviewsButton">후기 더보기</button>
+				</div>
 			</div>
 		</div>
-	</div>
 
 
-	<div class="content">
-		<!-- 왼쪽 섹션: 탭바와 상세 정보 -->
-		<div class="left-section">
+		<!-- 하단 컨텐츠 -->
+		<div class="main-content">
 			<div class="tabs">
 				<button class="tab active" data-target="#introduction">소개</button>
 				<button class="tab" data-target="#facilities">시설/서비스</button>
@@ -181,36 +208,102 @@
 			</div>
 			<div id="introduction" class="content-area">
 				<h3>소개</h3>
-				<p><%= description %></p>
+				<%= description %>
 			</div>
 			<div id="facilities" class="content-area">
 				<h3>시설/서비스</h3>
-				<p><%= facilities %></p>
+				<div class="facility-item">
+					<img src="../images/check.png" alt="체크 아이콘" class="facility-icon">
+					<p><%= facilities %></p>
+				</div>
+				<div class="facility-item">
+					<img src="../images/check.png" alt="체크 아이콘" class="facility-icon">
+					<p>또 다른 시설/서비스 내용이 들어갑니다.</p>
+				</div>
 			</div>
 			<div id="reviews" class="content-area">
-				<h3>후기</h3>
-				<p>여기에 후기 내용이 들어갑니다.</p>
+				<div class="overall-rating">
+					<h3>전체 평점</h3>
+					<p class="rating-score">
+						<span>4.3</span> <span>리뷰 300개</span>
+					</p>
+					<div class="stars">★★★★☆</div>
+				</div>
+				<div class="detailed-ratings">
+					<h4>항목별 평점</h4>
+					<div class="rating-bars">
+						<div class="rating-bar">
+							<span>교통:</span>
+							<div class="bar">
+								<div class="filled-bar" style="width: 80%;"></div>
+							</div>
+							<span>4.0</span>
+						</div>
+						<div class="rating-bar">
+							<span>주차:</span>
+							<div class="bar">
+								<div class="filled-bar" style="width: 70%;"></div>
+							</div>
+							<span>3.5</span>
+						</div>
+						<div class="rating-bar">
+							<span>분위기:</span>
+							<div class="bar">
+								<div class="filled-bar" style="width: 90%;"></div>
+							</div>
+							<span>4.5</span>
+						</div>
+						<div class="rating-bar">
+							<span>가격:</span>
+							<div class="bar">
+								<div class="filled-bar" style="width: 60%;"></div>
+							</div>
+							<span>3.0</span>
+						</div>
+						<div class="rating-bar">
+							<span>위치:</span>
+							<div class="bar">
+								<div class="filled-bar" style="width: 95%;"></div>
+							</div>
+							<span>4.8</span>
+						</div>
+					</div>
+				</div>
+				<div class="review-write">
+					<h4>리뷰 작성</h4>
+					<form id="reviewForm">
+						<div class="rating-input">
+							<label>교통:</label> <input type="number" name="traffic" min="1"
+								max="5" required> <label>주차:</label> <input
+								type="number" name="parking" min="1" max="5" required> <label>분위기:</label>
+							<input type="number" name="ambiance" min="1" max="5" required>
+							<label>가격:</label> <input type="number" name="price" min="1"
+								max="5" required> <label>위치:</label> <input
+								type="number" name="location" min="1" max="5" required>
+						</div>
+						<textarea name="reviewText" placeholder="후기를 입력해주세요" required></textarea>
+						<button type="submit">리뷰 등록</button>
+					</form>
+					<div id="submitted-reviews">
+						<h4>작성된 리뷰</h4>
+						<!-- 여기에 새로운 리뷰가 추가됩니다 -->
+					</div>
+				</div>
 			</div>
 			<div id="notices" class="content-area">
 				<h3>예약 공지</h3>
 				<p><%= reservation_notice %></p>
 			</div>
 		</div>
+	</div>
 
-		<!-- 오른쪽 섹션: 지도, 가격 정보, 채팅 -->
-		<div class="right-section">
-			<div class="map-container">
-				<img src="images/map-placeholder.png" alt="지도" class="map-image">
-				<p>위치 평점: 9.3<br>도심에 위치</p>
-			</div>
-			<div class="price-info">
-				<h4>최근 예약가</h4>
-				<p>옵션: 식대/뷔페 포함</p>
-				<p>거래가: 3000만 원</p>
-				<p>거래 일시: 2025/03/03</p>
-			</div>
-			<button class="chat-btn2">채팅 하기</button>
+	<!-- 하단바 -->
+	<div class="bottom-bar">
+		<div class="heart-icon">
+			<!-- heart-icon 클래스를 추가 -->
+			<img src="../images/heart.png" alt="찜 버튼" />
 		</div>
+		<div class="chat-btn">채팅하기</div>
 	</div>
 
 
