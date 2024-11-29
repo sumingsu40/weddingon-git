@@ -1,0 +1,105 @@
+@charset "UTF-8";
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f8f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* 채팅창 팝업 */
+.chat-popup {
+    width: 500px; /* 기존 400px에서 500px로 확대 */
+    height: 600px; /* 높이 추가 */
+    background-color: #fce4ec;
+    border-radius: 15px; /* 조금 더 둥글게 */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* 그림자 강화 */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* 채팅창 헤더 */
+.chat-header {
+    background-color: #f8bbd0;
+    padding: 20px; /* 상하좌우 여백 확대 */
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-header span {
+    font-size: 22px; /* 글자 크기 확대 */
+    font-weight: bold;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 20px; /* 버튼 크기 확대 */
+    cursor: pointer;
+    color: #333;
+}
+
+/* 채팅창 본문 */
+.chat-body {
+    flex: 1;
+    padding: 20px; /* 내부 여백 확대 */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* 메시지 간 간격 확대 */
+}
+
+.chat-message {
+    max-width: 70%;
+    padding: 15px; /* 메시지 여백 확대 */
+    border-radius: 10px;
+    background-color: #e0e0e0;
+    font-size: 16px; /* 글자 크기 확대 */
+}
+
+.chat-message.sent {
+    align-self: flex-end;
+    background-color: #cfd8dc;
+}
+
+.chat-message.received {
+    align-self: flex-start;
+    background-color: #e0e0e0;
+}
+
+/* 채팅창 입력창 */
+.chat-footer {
+    display: flex;
+    padding: 15px;
+    gap: 15px;
+    align-items: center;
+    border-top: 1px solid #ccc;
+    background-color: #fce4ec;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 15px; /* 입력 필드 높이 증가 */
+    border-radius: 25px; /* 둥글기 조정 */
+    border: 1px solid #ccc;
+    font-size: 16px; /* 글자 크기 확대 */
+}
+
+.send-btn {
+    padding: 10px 20px; /* 버튼 크기 확대 */
+    background-color: #f8bbd0;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px; /* 글자 크기 확대 */
+    color: #fff;
+}
+
