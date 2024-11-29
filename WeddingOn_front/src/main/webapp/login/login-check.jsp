@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%@ page import="java.io.*" %>
-   
-<%	
+
+<%
     // 데이터베이스 연결 정보
     String dbURL = "jdbc:mysql://weddingondb.cni2gssosrpi.ap-southeast-2.rds.amazonaws.com:3306/weddingonDB?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
     String dbUser = "admin";
@@ -37,8 +37,14 @@
 
         if (rs.next()) {
             // 로그인 성공
-            message = "로그인 성공! 환영합니다, " + rs.getString("id") + "님!";
-            session.setAttribute("user", rs.getString("id")); // 세션에 사용자 정보 저장
+            int userDbId = rs.getInt("userID");
+            String username = rs.getString("name"); // 사용자 이름 가져오기
+            System.out.println("Debugging userId: " + userId);
+            
+            session.setAttribute("userID", userDbId);
+            session.setAttribute("userId", userId); // 세션에 ID 저장
+            session.setAttribute("userName", username); // 세션에 사용자 이름 저장
+            message = "로그인 성공! 환영합니다, " + username + "님!";
             response.sendRedirect("../Main-loadmap/index.jsp"); // 메인 페이지로 이동
         } else {
             // 로그인 실패
