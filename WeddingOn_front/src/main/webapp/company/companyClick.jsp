@@ -12,8 +12,8 @@
 <%
     // URL에서 company_id를 가져오기
     String companyId = request.getParameter("companyId");
-	System.out.println("companyID: " + companyId);
-	
+   System.out.println("companyID: " + companyId);
+   
     if (companyId == null || companyId.isEmpty()) {
         response.getWriter().println("<h1>올바른 회사 정보가 없습니다.</h1>");
         return;
@@ -169,8 +169,8 @@
 <style>
 /* 활성화된 탭 스타일 */
 .tab.active {
-	background: #F9BBBB;
-	font-weight: bold;
+   background: #F9BBBB;
+   font-weight: bold;
 }
 </style>
 </head>
