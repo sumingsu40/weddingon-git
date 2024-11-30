@@ -270,7 +270,7 @@
 				</div>
 				<div class="reviews">
 					<h3>
-						<span id="overall-rating"><%= String.format("%.1f", overallRatingAvg) %></span> 최우수 <span id="review-count">(<%= totalReviewCount %>건의
+						<span id="overall-rating"><%= String.format("%.1f", overallRatingAvg) %></span> <span id="review-count">(<%= totalReviewCount %>건의
 							후기)</span>
 					</h3>
 						<div class="review-box">
@@ -302,11 +302,13 @@
 
 		<!-- 하단 컨텐츠 -->
 		<div class="main-content">
-			<div class="tabs">
-				<button class="tab active" data-target="#introduction">소개</button>
-				<button class="tab" data-target="#facilities">시설/서비스</button>
-				<button class="tab" data-target="#reviews">후기</button>
-				<button class="tab" data-target="#notices">예약 공지</button>
+			<div class="tabs-container">
+			    <div class="tabs">
+			        <button class="tab active" data-target="#introduction">소개</button>
+			        <button class="tab" data-target="#facilities">시설/서비스</button>
+			        <button class="tab" data-target="#reviews">후기</button>
+			        <button class="tab" data-target="#notices">예약 공지</button>
+			    </div>
 			</div>
 			<div id="introduction" class="content-area">
 				<h3>소개</h3>
@@ -324,10 +326,10 @@
 				</div>
 			</div>
 						<div id="reviews" class="content-area">
+						<h3>후기</h3>
 				<div class="overall-rating">
-				    <h3>전체 평점</h3>
 				    <p class="rating-score">
-				        <span><%= String.format("%.1f", overallRatingAvg) %></span> 
+				        <h1><span><%= String.format("%.1f", overallRatingAvg) %></span></h1>
 				        <span>리뷰 <%= totalReviewCount %>개</span>
 				    </p>
 				    <div class="stars">
@@ -408,9 +410,9 @@
 					        <label>위치:</label> <input type="number" name="location" min="1" max="5" required>
 					    </div>
 					    <textarea name="reviewText" placeholder="후기를 입력해주세요" required></textarea>
-					    <button type="submit">리뷰 등록</button>
+					    <button type="submit">리뷰 등록</button> 
 					</form>
-
+					<hr class="review-divider"> 
 
 					<div id="submitted-reviews">
 					    <h4>작성된 리뷰</h4>
@@ -418,20 +420,28 @@
 					        if (!reviews.isEmpty()) {
 					            for (Map<String, Object> review : reviews) {
 					    %>
-					                <div class="review-item">
-					                    <p><strong>작성자:</strong> 사용자 <%= review.get("user_id") %></p>
-					                    <p><strong>평점:</strong> 
-					                        전체: <%= ((BigDecimal) review.get("overall_rating")).toPlainString() %> |
-					                        교통: <%= ((BigDecimal) review.get("traffic_rating")).toPlainString() %> |
-					                        주차: <%= ((BigDecimal) review.get("parking_rating")).toPlainString() %> |
-					                        분위기: <%= ((BigDecimal) review.get("atmosphere_rating")).toPlainString() %> |
-					                        가격: <%= ((BigDecimal) review.get("price_rating")).toPlainString() %> |
-					                        위치: <%= ((BigDecimal) review.get("location_rating")).toPlainString() %>
-					                    </p>
-					                    <p><strong>리뷰 내용:</strong> <%= review.get("review_text") %></p>
-					                    <p><small>작성일: <%= review.get("created_at") %></small></p>
-					                    <hr>
-					                </div>
+					               <div class="review-item">
+									    <div class="review-header">
+									        <span class="review-user"><strong>작성자:</strong> 사용자 <%= review.get("user_id") %></span>
+									        <span class="review-date"><small><%= review.get("created_at") %></small></span>
+									    </div>
+									    <div class="review-ratings">
+									        <p><strong>평점:</strong></p>
+									        <ul class="ratings-list">
+									            <li>전체: <%= ((BigDecimal) review.get("overall_rating")).toPlainString() %></li>
+									            <li>교통: <%= ((BigDecimal) review.get("traffic_rating")).toPlainString() %></li>
+									            <li>주차: <%= ((BigDecimal) review.get("parking_rating")).toPlainString() %></li>
+									            <li>분위기: <%= ((BigDecimal) review.get("atmosphere_rating")).toPlainString() %></li>
+									            <li>가격: <%= ((BigDecimal) review.get("price_rating")).toPlainString() %></li>
+									            <li>위치: <%= ((BigDecimal) review.get("location_rating")).toPlainString() %></li>
+									        </ul>
+									    </div>
+									    <div class="review-content">
+									        <p><strong>리뷰 내용:</strong> <%= review.get("review_text") %></p>
+									    </div>
+									    <hr>
+									</div>
+					               
 					    <%
 					            }
 					        } else {
@@ -441,7 +451,6 @@
 					        }
 					    %>
 					</div>
-
 				</div>
 			</div>
 			<div id="notices" class="content-area">
@@ -462,21 +471,7 @@
 
 
 	 <script>
-	        document.querySelectorAll('.tab').forEach(tab => {
-	            tab.addEventListener('click', () => {
-	                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-	                tab.classList.add('active');
-	                document.querySelectorAll('.content-area').forEach(content => content.classList.remove('active'));
-	                const target = document.querySelector(tab.getAttribute('data-target'));
-	                target.classList.add('active');
-	                target.scrollIntoView({ behavior: 'smooth' });
-	            });
-	        });
-	
-	        document.querySelector('.tab').click();
-	   
-	    
-	    
+	       
 	 // 두 하트를 동기화하여 함께 작동하도록 설정
 	    document.querySelectorAll('.heart-icon img').forEach(icon => {
 	        icon.addEventListener('click', () => {
@@ -490,22 +485,82 @@
 	            });
 	        });
 	    });
-	
-	 // 후기 더보기 버튼 클릭 시 "후기" 탭으로 이동
-	    document.getElementById("moreReviewsButton").addEventListener("click", () => {
-	        // 모든 탭의 활성화 클래스 제거
-	        document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
-	        document.querySelectorAll(".content-area").forEach(content => content.classList.remove("active"));
-	
-	        // "후기" 탭 활성화
-	        const reviewTab = document.querySelector(".tab[data-target='#reviews']");
-	        const reviewContent = document.getElementById("reviews");
-	        reviewTab.classList.add("active");
-	        reviewContent.classList.add("active");
-	
-	        // "후기" 섹션으로 스크롤 이동
-	        reviewContent.scrollIntoView({ behavior: "smooth" });
+	 
+	 
+	 // 탭 클릭 시 해당 섹션으로 이동
+	    document.querySelectorAll('.tab').forEach(tab => {
+	        tab.addEventListener('click', () => {
+	            // 모든 탭의 활성화 상태 제거
+	            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+	            tab.classList.add('active');
+
+	            // 모든 섹션의 활성화 상태 제거
+	            document.querySelectorAll('.content-area').forEach(content => content.classList.remove('active'));
+	            const target = document.querySelector(tab.getAttribute('data-target'));
+
+	            // 섹션 활성화
+	            target.classList.add('active');
+
+	            // 상단 고정 메뉴바와 탭바 높이를 고려한 오프셋 계산
+	            const menuBarHeight = document.querySelector('.menu_bar')?.offsetHeight || 0; // 메뉴바 높이
+	            const tabsHeight = document.querySelector('.tabs')?.offsetHeight || 0; // 탭바 높이
+	            const totalOffset = menuBarHeight + tabsHeight + 10; // 여유 공간 10px 추가
+
+	            // 정확한 위치로 스크롤 이동
+	            const targetOffset = Math.max(target.offsetTop - totalOffset, 0);
+
+	            // 스크롤 이동
+	            window.scrollTo({
+	                top: targetOffset,
+	                behavior: 'smooth' // 부드러운 스크롤
+	            });
+	        });
 	    });
+
+	    // "후기 더보기" 버튼 클릭 시 "후기" 탭으로 이동
+	    document.getElementById('moreReviewsButton').addEventListener('click', () => {
+	        // "후기" 탭과 섹션 활성화
+	        const reviewTab = document.querySelector(".tab[data-target='#reviews']");
+	        const reviewContent = document.getElementById('reviews');
+
+	        // 모든 탭 및 섹션 초기화
+	        document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+	        document.querySelectorAll('.content-area').forEach(content => content.classList.remove('active'));
+
+	        reviewTab.classList.add('active');
+	        reviewContent.classList.add('active');
+
+	        // 상단 고정 메뉴바와 탭바 높이 계산
+	        const menuBarHeight = document.querySelector('.menu_bar')?.offsetHeight || 0; // 메뉴바 높이
+	        const tabsHeight = document.querySelector('.tabs')?.offsetHeight || 0; // 탭바 높이
+	        const totalOffset = menuBarHeight + tabsHeight + 10; // 여유 공간 추가
+
+	        // 스크롤 이동
+	        const targetOffset = Math.max(reviewContent.offsetTop - totalOffset, 0);
+
+	        window.scrollTo({
+	            top: targetOffset,
+	            behavior: 'smooth' // 부드러운 스크롤
+	        });
+	    });
+
+	    // 탭바 고정 관련 코드
+	    const tabsContainer = document.querySelector('.tabs-container');
+	    const tabs = document.querySelector('.tabs');
+	    const tabsOffsetTop = tabsContainer.offsetTop;
+
+	    window.addEventListener('scroll', () => {
+	        const menuBarHeight = document.querySelector('.menu_bar')?.offsetHeight || 0; // 메뉴바 높이
+	        if (window.scrollY >= tabsOffsetTop - menuBarHeight) {
+	            tabs.classList.add('sticky-tabs');
+	            tabsContainer.classList.add('sticky-spacing'); // 여백 추가
+	        } else {
+	            tabs.classList.remove('sticky-tabs');
+	            tabsContainer.classList.remove('sticky-spacing'); // 여백 제거
+	        }
+	    });
+
+	
 	</script>
     
 </body>
