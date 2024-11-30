@@ -1,56 +1,67 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
-
 <%@ page session="true" %>
 
 <%
-    String chatId = request.getParameter("chat_id");
-    String messageText = request.getParameter("message_text");
-
-    // 파라미터 검증
-    if (chatId == null || chatId.trim().isEmpty() || messageText == null || messageText.trim().isEmpty()) {
-        out.print("Invalid parameters");
-        return;
-    }
-
-    int chatIdInt;
-    try {
-        chatIdInt = Integer.parseInt(chatId);
-    } catch (NumberFormatException e) {
-        out.print("Invalid chat_id format");
-        return;
-    }
+    response.setContentType("application/json; charset=UTF-8");
 
     Connection conn = null;
     PreparedStatement pstmt = null;
 
+    String dbURL = "jdbc:mysql://weddingondb.cni2gssosrpi.ap-southeast-2.rds.amazonaws.com:3306/weddingonDB?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
+    String dbUser = "admin";
+    String dbPassword = "solution";
+
     try {
-        // 데이터베이스 연결
-        String dbURL = "jdbc:mysql://weddingondb.cni2gssosrpi.ap-southeast-2.rds.amazonaws.com:3306/weddingonDB?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
-	    String dbUser = "admin";
-	    String dbPassword = "solution";
+        Integer userIdInteger = (Integer) session.getAttribute("userDbId");
+        if (userIdInteger == null) {
+            response.getWriter().println("{\"status\":\"error\", \"message\":\"User not authenticated\"}");
+            return;
+        }
+        String userId = userIdInteger.toString();
+        String companyId = request.getParameter("companyId");
+        String messageText = request.getParameter("messageText");
+        String receiverId = request.getParameter("receiverId");
+
+        if (receiverId == null || receiverId.trim().isEmpty()) {
+            receiverId = "1"; // 기본값 설정
+        }
+
+        if (userId == null || companyId == null || messageText == null || messageText.trim().isEmpty()) {
+            response.getWriter().println("{\"status\":\"error\", \"message\":\"Invalid input data\"}");
+            return;
+        }
 
         Class.forName("com.mysql.cj.jdbc.Driver");
         conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
 
-        // 메시지 저장 쿼리
-        String sql = "INSERT INTO messages (chat_id, sender_id, message_text, sent_at) VALUES (?, ?, ?, NOW())";
+        String sql = "INSERT INTO messages (chat_id, sender_id, receiver_id, message_text, sent_at) VALUES (?, ?, ?, ?, NOW())";
         pstmt = conn.prepareStatement(sql);
-        pstmt.setInt(1, chatIdInt);
-        pstmt.setInt(2, 1); // sender_id는 예시로 1로 고정
-        pstmt.setString(3, messageText);
 
-        int rows = pstmt.executeUpdate();
-        if (rows > 0) {
-            out.print("Message sent successfully");
+        pstmt.setInt(1, Integer.parseInt(companyId));
+        pstmt.setInt(2, Integer.parseInt(userId));
+        pstmt.setInt(3, Integer.parseInt(receiverId));
+        pstmt.setString(4, messageText);
+
+        int result = pstmt.executeUpdate();
+
+        if (result > 0) {
+            response.getWriter().println("{\"status\":\"success\", \"message\":\"Message sent successfully\"}");
         } else {
-            out.print("Failed to send message");
+            response.getWriter().println("{\"status\":\"error\", \"message\":\"Message sending failed\"}");
         }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        response.getWriter().println("{\"status\":\"error\", \"message\":\"Database error occurred. Please try again later.\"}");
     } catch (Exception e) {
         e.printStackTrace();
-        out.print("Error occurred");
+        response.getWriter().println("{\"status\":\"error\", \"message\":\"Unexpected error occurred.\"}");
     } finally {
-        if (pstmt != null) pstmt.close();
-        if (conn != null) conn.close();
+        try {
+            if (pstmt != null) pstmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 %>
