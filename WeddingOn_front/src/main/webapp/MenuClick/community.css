@@ -1,0 +1,186 @@
+@charset "UTF-8";
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans KR', Arial, sans-serif;
+    background-color: #FFFFFF;
+}
+
+.community-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #FFF;
+    border: 1px solid #DDD;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height:750px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease, width 0.3s ease;
+}
+
+.community-container.shift {
+    transform: translateX(-300px);
+    width: 700px;
+}
+
+.new-post {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #DDD;
+    border-radius: 10px;
+    background-color: #FFE4E9;
+    position: relative;
+}
+
+.new-post-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    padding: 5px 10px;
+    background-color: transparent;
+}
+
+.new-post-icon {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+}
+
+.post-list {
+    flex: 1;
+    display: grid;
+    grid-template-rows: repeat(6, 1fr);
+    gap: 10px;
+}
+
+.post-card {
+    border: 1px solid #DDD;
+    border-radius: 10px;
+    padding: 15px;
+    background-color: #FFF4F6;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.post-card h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.post-card p {
+    font-size: 14px;
+    color: #666;
+}
+
+.pagination {
+    margin-top: 10px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
+.page-btn {
+    background-color: #FF99AA;
+    color: #FFF;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    margin: 0 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom:0px;
+}
+
+.page-btn:hover {
+    background-color: #FF6699;
+}
+
+.page-btn.active {
+    background-color: #FF6699;
+}
+
+
+
+.write-post {
+    width: 500px;
+    position: absolute;
+    top: 50px;
+    right:80px;
+    background-color: #FFF8FB;
+    border: 2px solid #FFD6E2;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center; /* 컨텐츠 수평 가운데 정렬 */
+}
+
+
+.write-post.hidden {
+    display: none;
+}
+.write-post-title, .write-post-text, .write-post-hashtags {
+    display: flex;
+    align-items: center; /* 세로 가운데 정렬 */
+    justify-content: center; /* 가로 가운데 정렬 */
+    padding: 10px; /* 여백 추가 */
+    width: 100%; /* 가로 크기 유지 */
+    height: auto; /* 기본 높이 */
+    border: 1px solid #DDD;
+    border-radius: 10px;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box; /* 패딩과 테두리를 포함한 박스 크기 계산 */
+}
+
+.write-post-title, .write-post-hashtags {
+    width: 90%;
+    height: 40px;
+    border: 1px solid #DDD;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 16px;
+    outline: none;
+}
+
+.write-post-text {
+    width: 90%;
+    height: 250px;
+    border: 1px solid #DDD;
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 14px;
+    resize: none;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.save-btn, .reset-btn {
+    background-color: #FF99AA;
+    color: #FFF;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.save-btn:hover, .reset-btn:hover {
+    background-color: #FF6699;
+}

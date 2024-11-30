@@ -1,0 +1,142 @@
+
+@charset "UTF-8";
+.calendar {
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.nav-button {
+    background-color: #ffccd5;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.nav-button:hover {
+    background-color: #ff99aa;
+}
+
+.month-year {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.calendar-table {
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.calendar-table th {
+    width: 14.28%;
+    height: 50px; /* 요일 셀 높이를 작게 설정 */
+    text-align: center;
+    vertical-align: middle;
+    font-size: 14px; /* 요일 글자 크기를 조금 작게 */
+    font-weight: bold;
+    color: #666; /* 요일 색상 */
+    background-color: #f2f2f2; /* 요일 배경색 */
+    border: 1px solid #e0e0e0;
+}
+
+.calendar-table td {
+    width: 14.28%;
+    height: 80px;
+    text-align: left; /* 날짜를 좌측 정렬 */
+    vertical-align: top; /* 날짜를 상단 정렬 */
+    padding: 5px; /* 셀 안쪽 여백 */
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative; /* 이벤트 배치 등을 위한 상대 위치 설정 */
+}
+
+.calendar-table td span {
+    position: absolute;
+    top: 5px;
+    left: 5px; /* 날짜 숫자를 셀의 좌측 상단으로 이동 */
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+.calendar-table td:hover {
+    background-color: #ffe6ee;
+    transform: scale(1.05);
+}
+
+.today {
+    position: relative;
+    color: black !important; /* 숫자 외 텍스트 기본 색상 */
+    font-size: 14px;
+    text-align: center;
+}
+
+/* 숫자 강조 원 */
+.today span {
+	padding-left:3px;
+    display: inline-block;
+    background-color: #ffccd5; /* 배경색 강조 */
+    width: 21px;
+    height: 23px;
+    border-radius: 50%; /* 완전한 원 */
+    z-index: -1; /* 숫자 아래로 배치 */
+}
+
+.event {
+    background-color: #ff99aa;
+    color: white;
+    font-size: 12px;
+    padding: 2px 5px;
+    border-radius: 5px;
+    text-align: center;
+    white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 */
+    text-overflow: ellipsis; /* 길면 ...으로 표시 */
+    overflow: hidden; /* 텍스트가 넘치지 않도록 */
+}
+
+.event-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column; /* 여러 이벤트를 세로로 정렬 */
+    gap: 3px; /* 이벤트 간의 간격 */
+    overflow: hidden; /* 셀에서 넘치지 않도록 */
+}
+
+
+#popupFrame {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 300px;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    background: white;
+    border-radius: 10px;
+}
+
+.hidden {
+    display: none;
+}

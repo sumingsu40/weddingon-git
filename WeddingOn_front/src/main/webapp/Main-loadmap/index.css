@@ -1,102 +1,119 @@
 @charset "UTF-8";
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+
 .top_bar {
-	width: 100%;
-	height: 96px;
-	background-color: #FCE0EC;
-	position: fixed;
-	top: 0;
-	left: 0; /* 화면의 왼쪽에서 시작하도록 설정 */
+    width: 100%;
+    height: 85px;
+    background-color: #FCE0EC; /* 상단 바 색상 */
+    position: fixed;
+    top: 0;
+    left: 0;
 }
 
 .search_container {
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-	display: flex;
-	align-items: center; /* 버튼과 검색창이 같은 높이에 위치하도록 */
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    margin-top:5px;
 }
 
 .search_icon {
-	height: 47px;
-	width: 450px; /* 검색창 너비 조정 */
-	border-radius: 20px;
-	padding-left: 20px;
+    height: 47px;
+    width: 450px;
+    border-radius: 20px;
+    padding-left: 20px;
+    border: 1px solid #D3D3D3;
 }
 
 .search_button {
-	width: 53px;
-	height: 47px;
-	border-radius: 20px;
-	background-color: white;
-	cursor: pointer;
-	margin-left: 4px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+    width: 53px;
+    height: 47px;
+    border-radius: 20px;
+    background-color: white;
+    cursor: pointer;
+    margin-left: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #D3D3D3;
 }
 
 .logo {
-	position: absolute;
-	left: 40px; /* 상단 왼쪽에 고정된 위치로 변경 */
-	top: 50%;
-	transform: translateY(-50%);
-}
-.Mypage{
-	position: absolute;
-	right: 40px; /* 상단 오른쪽에 고정된 위치로 변경 */
-	top: 50%;
-	transform: translateY(-50%);
+    position: absolute;
+    left: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-top:5px;
 }
 
-.menu_bar{
-	display :flex;
-	width: 100%;
-	height: 68px;
-	background-color: #F6CDCD;
-	position: fixed;
-	top: 96px;;
-	left: 0;
-	justify-content: space-between;/*구역간 일정한 간격*/
+.mypage {
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-top:5px;
+    width:50px;
+    height:50px;
 }
 
-.box{
-	display: flex;
-	flex: 1; /* 각 구역이 동일한 너비를 가짐 */
-    padding: 20px;
-    text-align: center;
-    border : 2px solid black;
-    flex-direction: column;
-    align-items: center; /* 가로 가운데 정렬 */
-    justify-content: center; /* 세로 가운데 정렬 */
-    
-}
-#menu-icon{
-	margin-top: 5px;
-	width: 41px; /* 아이콘 크기 조정 */
-    height: 33px;
-    margin-bottom: 2px; /* 아이콘과 텍스트 간 간격 */
-}
-.loadmap{
-	position: relative;
-	text-align: center; /* 텍스트와 이미지가 가운데 정렬되도록 설정 */
-	margin-top: 190px; 
-	margin-bottom:20px;
+.menu_bar {
     display: flex;
-    justify-content: center; /* 이미지 가운데 정렬 */
+    width: 100%;
+    height: 60px;
+    background-color: #FCE0EC; /* 메뉴 바 색상 (상단 바와 동일) */
+    position: fixed;
+    top: 85px;
+    left: 0;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: 2px solid rgb(255, 208, 215); /* 하단 구분선 */
 }
 
-.loadmap h2 {
-	position:absolute; 
+.menu_item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    position: relative;
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: color 0.3s ease;
 }
-.loadmap img{
-	padding-top:50px;/* 텍스트와 이미지 사이의 여백 */
-    width: 78%; /* 화면 너비의 80% */
-    height: auto; /* 이미지 비율 유지 */
-    object-fit: cover;
+
+.menu_item:hover {
+    color: #FF6699; /* 호버 시 글자색 변경 */
+    transform: scale(1.1); /* 메뉴 전체 확대 효과 */
+    transition: transform 0.2s ease, color 0.3s ease; /* 부드러운 애니메이션 */
 }
+
+.menu_item.active {
+    color: #FF6699; /* 선택된 메뉴 글자 강조 */
+}
+
+.menu_item.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #FF6699; /* 하단 강조선 색상 */
+}
+
+.menu_icon {
+    margin-top: 5px;
+    width: 28px; /* 아이콘 크기 */
+    height: 28px;
+}
+
