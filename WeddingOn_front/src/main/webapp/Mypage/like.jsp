@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
+<%@ page session="true" %>
 
 <%
     // 세션에서 userID 가져오기
-    Integer userDbId = (Integer) session.getAttribute("userID"); // userID는 Integer로 저장됨
+    Integer userDbId = (Integer) session.getAttribute("userDbId"); // userID는 Integer로 저장됨
     if (userDbId == null) {
         response.sendRedirect("../login/login.jsp");
         return;

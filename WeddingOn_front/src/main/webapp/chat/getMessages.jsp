@@ -3,6 +3,7 @@
 <%@ page import="java.sql.*, org.json.JSONArray, org.json.JSONObject" %>
 
 <%
+	response.setContentType("application/json; charset=UTF-8");
     // 파라미터 가져오기
     String chatIdParam = request.getParameter("chat_id");
     JSONArray messages = new JSONArray();

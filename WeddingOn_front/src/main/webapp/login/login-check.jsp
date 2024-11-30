@@ -39,12 +39,16 @@
             // 로그인 성공
             int userDbId = rs.getInt("userID");
             String username = rs.getString("name"); // 사용자 이름 가져오기
-            System.out.println("Debugging userId: " + userId);
             
-            session.setAttribute("userID", userDbId);
+            session.setAttribute("userDbId", userDbId);
             session.setAttribute("userId", userId); // 세션에 ID 저장
             session.setAttribute("userName", username); // 세션에 사용자 이름 저장
             message = "로그인 성공! 환영합니다, " + username + "님!";
+            
+            System.out.println("userID: " + userDbId);
+            System.out.println("userId: " + userId);
+            System.out.println("username: " + username);
+            
             response.sendRedirect("../Main-loadmap/index.jsp"); // 메인 페이지로 이동
         } else {
             // 로그인 실패

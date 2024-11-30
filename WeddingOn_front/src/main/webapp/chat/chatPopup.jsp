@@ -1,5 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%@ page session="true" %>
+
+<%
+    // JSP에서 세션과 요청 값 가져오기
+    Integer userIdInteger = (Integer) session.getAttribute("userDbId");
+	String userId = userIdInteger != null ? userIdInteger.toString() : null;
+	
+    String companyId = request.getParameter("companyId");
+    
+    System.out.println("chat");
+    System.out.println("userId : " + userId);
+    System.out.println("companyId : " + companyId);
+    
+%>
+
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -11,7 +26,9 @@
     <!-- 채팅창 팝업 -->
     <div id="chatPopup" class="chat-popup">
         <div class="chat-header">
-            <span id="chatCompanyName"><%= request.getParameter("companyName") != null ? request.getParameter("companyName") : "업체명" %></span>
+            <span id="chatCompanyName">
+                <%= request.getParameter("companyName") != null ? request.getParameter("companyName") : "업체명" %>
+            </span>
             <button id="closePopup" class="close-btn">X</button>
         </div>
         <div class="chat-body" id="chatBody">
@@ -23,33 +40,15 @@
         </div>
     </div>
 
-    <script>
-        // 닫기 버튼 동작
-        document.getElementById('closePopup').addEventListener('click', () => {
-            document.getElementById('chatPopup').style.display = 'none';
-        });
+	<div id="dataContainer" 
+     	data-user-id="<%= userId %>" 
+     	data-company-id="<%= companyId != null ? companyId : "" %>">
+	</div>
 
-        // 전송 버튼 동작
-        document.getElementById('sendButton').addEventListener('click', sendMessage);
 
-        // 메시지 전송 함수
-        function sendMessage() {
-            const chatInput = document.getElementById('chatInput');
-            const chatBody = document.getElementById('chatBody');
-            const message = chatInput.value.trim();
+	<script src="chatPopup.js"></script>
+	
+	
 
-            if (message) {
-                // 전송된 메시지 추가
-                const newMessage = document.createElement('div');
-                newMessage.className = 'chat-message sent';
-                newMessage.textContent = message;
-                chatBody.appendChild(newMessage);
-
-                // 입력 필드 초기화
-                chatInput.value = '';
-                chatBody.scrollTop = chatBody.scrollHeight; // 스크롤 하단 이동
-            }
-        }
-    </script>
-</body>
+    </body>
 </html>
