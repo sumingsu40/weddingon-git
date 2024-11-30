@@ -1,8 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*"%>
 <%@ page import="java.time.*"%>
 <%@ page import="java.time.temporal.ChronoUnit"%>
+<%@ page import="java.util.List, java.util.Map, java.util.ArrayList, java.util.HashMap" %>
+<%@ page import="java.math.BigDecimal" %>
+
 
 <%@ page session="true"%>
 
@@ -20,13 +22,9 @@
 
 <%
     // 데이터베이스 연결 정보
-   	String dbURL = "jdbc:mysql://weddingondb.cni2gssosrpi.ap-southeast-2.rds.amazonaws.com:3306/weddingonDB?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
+    String dbURL = "jdbc:mysql://weddingondb.cni2gssosrpi.ap-southeast-2.rds.amazonaws.com:3306/weddingonDB?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
     String dbUser = "admin";
     String dbPassword = "solution";
-
-    Connection conn = null;
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
 
     // 기업 정보를 저장할 변수
     String companyName = "";
@@ -37,40 +35,127 @@
     String facilities = "";
     String reservation_notice = "";
 
-    try {
-        // 데이터베이스 연결
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
+    // 리뷰 데이터를 저장할 변수
+    List<Map<String, Object>> reviews = new ArrayList<>();
+    double overallRatingAvg = 0.0;
+    int totalReviewCount = 0;
 
+    try (Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPassword)) {
         // 회사 정보 가져오기
-        String sql = "SELECT * FROM companies WHERE company_id = ?";
-        pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, companyId);
-        rs = pstmt.executeQuery();
+        String sqlCompany = "SELECT * FROM companies WHERE company_id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sqlCompany)) {
+            pstmt.setString(1, companyId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    companyName = rs.getString("company_name");
+                    address = rs.getString("address");
+                    description = rs.getString("summary");
+                    mainPhoto = rs.getString("image_path");
+                    rating = rs.getInt("rating");
+                    facilities = rs.getString("facilities");
+                    reservation_notice = rs.getString("reservation_notice");
+                } else {
+                    response.getWriter().println("<h1>회사를 찾을 수 없습니다.</h1>");
+                    return;
+                }
+            }
+        }
 
-        if (rs.next()) {
-            companyName = rs.getString("company_name");
-            address = rs.getString("address");
-            description = rs.getString("summary");
-            mainPhoto = rs.getString("image_path"); // DB에 저장된 이미지 경로
-            rating = rs.getInt("rating");
-            facilities = rs.getString("facilities");
-            reservation_notice = rs.getString("reservation_notice");
-            
-        } else {
-            response.getWriter().println("<h1>회사를 찾을 수 없습니다.</h1>");
-            return;
+        // 리뷰 가져오기
+        String sqlReviews = "SELECT * FROM reviews WHERE company_id = ? ORDER BY created_at DESC";
+        try (PreparedStatement pstmt = conn.prepareStatement(sqlReviews)) {
+            pstmt.setString(1, companyId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Map<String, Object> review = new HashMap<>();
+                    review.put("review_id", rs.getInt("review_id"));
+                    review.put("user_id", rs.getInt("user_id"));
+                    review.put("overall_rating", rs.getBigDecimal("overall_rating"));
+                    review.put("traffic_rating", rs.getBigDecimal("traffic_rating"));
+                    review.put("parking_rating", rs.getBigDecimal("parking_rating"));
+                    review.put("atmosphere_rating", rs.getBigDecimal("atmosphere_rating"));
+                    review.put("price_rating", rs.getBigDecimal("price_rating"));
+                    review.put("location_rating", rs.getBigDecimal("location_rating"));
+                    review.put("review_text", rs.getString("review_text"));
+                    review.put("created_at", rs.getTimestamp("created_at"));
+
+                    reviews.add(review);
+                }
+            }
+        }
+
+        // 전체 평점 평균 및 리뷰 개수 가져오기
+        String sqlOverallRating = "SELECT AVG(overall_rating) AS avg_rating, COUNT(*) AS review_count FROM reviews WHERE company_id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sqlOverallRating)) {
+            pstmt.setString(1, companyId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    overallRatingAvg = rs.getDouble("avg_rating");
+                    totalReviewCount = rs.getInt("review_count");
+                }
+            }
         }
     } catch (Exception e) {
         e.printStackTrace();
         response.getWriter().println("<h1>데이터베이스 오류</h1>");
-        return;
-    } finally {
-        if (rs != null) try { rs.close(); } catch (Exception e) {}
-        if (pstmt != null) try { pstmt.close(); } catch (Exception e) {}
-        if (conn != null) try { conn.close(); } catch (Exception e) {}
     }
 %>
+
+<% 
+    // 각 평점의 평균을 계산
+    double trafficRatingAvg = 0.0;
+    double parkingRatingAvg = 0.0;
+    double atmosphereRatingAvg = 0.0;
+    double priceRatingAvg = 0.0;
+    double locationRatingAvg = 0.0;
+    int totalReviews = reviews.size();
+
+    if (totalReviews > 0) {
+        for (Map<String, Object> review : reviews) {
+            if (review.get("traffic_rating") instanceof BigDecimal) {
+                trafficRatingAvg += ((BigDecimal) review.get("traffic_rating")).doubleValue();
+            } else if (review.get("traffic_rating") instanceof Double) {
+                trafficRatingAvg += (Double) review.get("traffic_rating");
+            }
+            if (review.get("parking_rating") instanceof BigDecimal) {
+                parkingRatingAvg += ((BigDecimal) review.get("parking_rating")).doubleValue();
+            } else if (review.get("parking_rating") instanceof Double) {
+                parkingRatingAvg += (Double) review.get("parking_rating");
+            }
+            if (review.get("atmosphere_rating") instanceof BigDecimal) {
+                atmosphereRatingAvg += ((BigDecimal) review.get("atmosphere_rating")).doubleValue();
+            } else if (review.get("atmosphere_rating") instanceof Double) {
+                atmosphereRatingAvg += (Double) review.get("atmosphere_rating");
+            }
+            if (review.get("price_rating") instanceof BigDecimal) {
+                priceRatingAvg += ((BigDecimal) review.get("price_rating")).doubleValue();
+            } else if (review.get("price_rating") instanceof Double) {
+                priceRatingAvg += (Double) review.get("price_rating");
+            }
+            if (review.get("location_rating") instanceof BigDecimal) {
+                locationRatingAvg += ((BigDecimal) review.get("location_rating")).doubleValue();
+            } else if (review.get("location_rating") instanceof Double) {
+                locationRatingAvg += (Double) review.get("location_rating");
+            }
+        }
+
+        // 평균 계산
+        trafficRatingAvg /= totalReviews;
+        parkingRatingAvg /= totalReviews;
+        atmosphereRatingAvg /= totalReviews;
+        priceRatingAvg /= totalReviews;
+        locationRatingAvg /= totalReviews;
+    }
+
+
+    // JSP에서 JavaScript 스타일을 사용해 동적 width를 계산
+    double trafficWidth = trafficRatingAvg * 20; // 평점 5점 기준 100% 환산
+    double parkingWidth = parkingRatingAvg * 20;
+    double atmosphereWidth = atmosphereRatingAvg * 20;
+    double priceWidth = priceRatingAvg * 20;
+    double locationWidth = locationRatingAvg * 20;
+%>
+
 
 
 <!DOCTYPE html>
@@ -96,7 +181,7 @@
 			<input class="search_icon" type="text" name="company_name">
 			<button type="submit" class="search_button">search</button>
 		</form>
-		<a href="index.jsp"> <img class="logo"
+		<a href="../Main-loadmap/index.jsp"> <img class="logo"
 			src="../images/weddingon-logo.png" alt="로고">
 		</a> <a href="../Mypage/mypage.jsp"> <img class="mypage"
 			src="../images/mypage-icon.png" alt="마이페이지 아이콘">
@@ -179,19 +264,36 @@
 				<div class="map-container">
 					<img src="../images/map-placeholder.png" alt="지도" class="map-image" />
 					<p>
-						위치 평점: <span id="location-rating">9.3</span><br /> <span
+						위치 평점: <span id="location-rating"><%= String.format("%.1f", locationRatingAvg) %></span><br /> <span
 							id="location-description">도심에 위치</span>
 					</p>
 				</div>
 				<div class="reviews">
 					<h3>
-						<span id="overall-rating">5.0</span> 최우수 <span id="review-count">(1300건의
+						<span id="overall-rating"><%= String.format("%.1f", overallRatingAvg) %></span> 최우수 <span id="review-count">(<%= totalReviewCount %>건의
 							후기)</span>
 					</h3>
-					<div class="review-box">
-						<div class="review" id="review-1">“너무 좋아용”</div>
-						<div class="review" id="review-2">“직원분들이 매우 친절해요”</div>
-					</div>
+						<div class="review-box">
+						    <%
+						        int displayedReviews = 0; // 출력된 리뷰 개수를 추적
+						        for (Map<String, Object> review : reviews) {
+						            if (displayedReviews >= 2) break; // 두 개만 출력
+						    %>
+						            <div class="review" id="review-<%= displayedReviews + 1 %>">
+						                “<%= review.get("review_text") %>”
+						            </div>
+						    <%
+						            displayedReviews++;
+						        }
+						
+						        if (displayedReviews == 0) {
+						    %>
+						            <p>아직 작성된 리뷰가 없습니다.</p>
+						    <%
+						        }
+						    %>
+						</div>
+
 					<button class="more-reviews" id="moreReviewsButton">후기 더보기</button>
 				</div>
 			</div>
@@ -218,76 +320,128 @@
 				</div>
 				<div class="facility-item">
 					<img src="../images/check.png" alt="체크 아이콘" class="facility-icon">
-					<p>또 다른 시설/서비스 내용이 들어갑니다.</p>
+					<p><%= facilities %></p>
 				</div>
 			</div>
-			<div id="reviews" class="content-area">
+						<div id="reviews" class="content-area">
 				<div class="overall-rating">
-					<h3>전체 평점</h3>
-					<p class="rating-score">
-						<span>4.3</span> <span>리뷰 300개</span>
-					</p>
-					<div class="stars">★★★★☆</div>
+				    <h3>전체 평점</h3>
+				    <p class="rating-score">
+				        <span><%= String.format("%.1f", overallRatingAvg) %></span> 
+				        <span>리뷰 <%= totalReviewCount %>개</span>
+				    </p>
+				    <div class="stars">
+				        <% 
+				            // 별 개수 계산
+				            int fullStars = (int) overallRatingAvg; // 꽉 찬 별의 개수
+				            boolean hasHalfStar = (overallRatingAvg - fullStars) >= 0.5; // 반 별 여부
+				
+				            for (int i = 0; i < fullStars; i++) { 
+				        %>
+				            ★
+				        <% 
+				            }
+				            if (hasHalfStar) { 
+				        %>
+				            ☆
+				        <% 
+				            }
+				            for (int i = fullStars + (hasHalfStar ? 1 : 0); i < 5; i++) { 
+				        %>
+				            ☆
+				        <% 
+				            } 
+				        %>
+				    </div>
 				</div>
+
 				<div class="detailed-ratings">
 					<h4>항목별 평점</h4>
 					<div class="rating-bars">
-						<div class="rating-bar">
-							<span>교통:</span>
-							<div class="bar">
-								<div class="filled-bar" style="width: 80%;"></div>
-							</div>
-							<span>4.0</span>
-						</div>
-						<div class="rating-bar">
-							<span>주차:</span>
-							<div class="bar">
-								<div class="filled-bar" style="width: 70%;"></div>
-							</div>
-							<span>3.5</span>
-						</div>
-						<div class="rating-bar">
-							<span>분위기:</span>
-							<div class="bar">
-								<div class="filled-bar" style="width: 90%;"></div>
-							</div>
-							<span>4.5</span>
-						</div>
-						<div class="rating-bar">
-							<span>가격:</span>
-							<div class="bar">
-								<div class="filled-bar" style="width: 60%;"></div>
-							</div>
-							<span>3.0</span>
-						</div>
-						<div class="rating-bar">
-							<span>위치:</span>
-							<div class="bar">
-								<div class="filled-bar" style="width: 95%;"></div>
-							</div>
-							<span>4.8</span>
-						</div>
+					    <div class="rating-bar">
+					        <span>교통:</span>
+					        <div class="bar">
+					            <div class="filled-bar" style="width: <%= trafficWidth %>%;"></div>
+					        </div>
+					        <span><%= String.format("%.1f", trafficRatingAvg) %></span>
+					    </div>
+					    <div class="rating-bar">
+					        <span>주차:</span>
+					        <div class="bar">
+					            <div class="filled-bar" style="width: <%= parkingWidth %>%;"></div>
+					        </div>
+					        <span><%= String.format("%.1f", parkingRatingAvg) %></span>
+					    </div>
+					    <div class="rating-bar">
+					        <span>분위기:</span>
+					        <div class="bar">
+					            <div class="filled-bar" style="width: <%= atmosphereWidth %>%;"></div>
+					        </div>
+					        <span><%= String.format("%.1f", atmosphereRatingAvg) %></span>
+					    </div>
+					    <div class="rating-bar">
+					        <span>가격:</span>
+					        <div class="bar">
+					            <div class="filled-bar" style="width: <%= priceWidth %>%;"></div>
+					        </div>
+					        <span><%= String.format("%.1f", priceRatingAvg) %></span>
+					    </div>
+					    <div class="rating-bar">
+					        <span>위치:</span>
+					        <div class="bar">
+					            <div class="filled-bar" style="width: <%= locationWidth %>%;"></div>
+					        </div>
+					        <span><%= String.format("%.1f", locationRatingAvg) %></span>
+					    </div>
 					</div>
 				</div>
+					
 				<div class="review-write">
 					<h4>리뷰 작성</h4>
-					<form id="reviewForm">
-						<div class="rating-input">
-							<label>교통:</label> <input type="number" name="traffic" min="1"
-								max="5" required> <label>주차:</label> <input
-								type="number" name="parking" min="1" max="5" required> <label>분위기:</label>
-							<input type="number" name="ambiance" min="1" max="5" required>
-							<label>가격:</label> <input type="number" name="price" min="1"
-								max="5" required> <label>위치:</label> <input
-								type="number" name="location" min="1" max="5" required>
-						</div>
-						<textarea name="reviewText" placeholder="후기를 입력해주세요" required></textarea>
-						<button type="submit">리뷰 등록</button>
+					<form id="reviewForm" action="insert-review.jsp" method="post" accept-charset="UTF-8">
+					    <input type="hidden" name="companyId" value="<%= companyId %>">
+					    <div class="rating-input">
+					        <label>교통:</label> <input type="number" name="traffic" min="1" max="5" required>
+					        <label>주차:</label> <input type="number" name="parking" min="1" max="5" required>
+					        <label>분위기:</label> <input type="number" name="ambiance" min="1" max="5" required>
+					        <label>가격:</label> <input type="number" name="price" min="1" max="5" required>
+					        <label>위치:</label> <input type="number" name="location" min="1" max="5" required>
+					    </div>
+					    <textarea name="reviewText" placeholder="후기를 입력해주세요" required></textarea>
+					    <button type="submit">리뷰 등록</button>
 					</form>
+
+
 					<div id="submitted-reviews">
-						<h4>작성된 리뷰</h4>
-						<!-- 여기에 새로운 리뷰가 추가됩니다 -->
+					    <h4>작성된 리뷰</h4>
+					    <% 
+					        if (!reviews.isEmpty()) {
+					            for (Map<String, Object> review : reviews) {
+					    %>
+					                <div class="review-item">
+					                    <p><strong>작성자:</strong> 사용자 <%= review.get("user_id") %></p>
+					                    <p><strong>평점:</strong> 
+					                        전체: <%= ((BigDecimal) review.get("overall_rating")).toPlainString() %> |
+					                        교통: <%= ((BigDecimal) review.get("traffic_rating")).toPlainString() %> |
+					                        주차: <%= ((BigDecimal) review.get("parking_rating")).toPlainString() %> |
+					                        분위기: <%= ((BigDecimal) review.get("atmosphere_rating")).toPlainString() %> |
+					                        가격: <%= ((BigDecimal) review.get("price_rating")).toPlainString() %> |
+					                        위치: <%= ((BigDecimal) review.get("location_rating")).toPlainString() %>
+					                    </p>
+					                    <p><strong>리뷰 내용:</strong> <%= review.get("review_text") %></p>
+					                    <p><small>작성일: <%= review.get("created_at") %></small></p>
+					                    <hr>
+					                </div>
+					    <%
+					            }
+					        } else {
+					    %>
+					        <p>아직 작성된 리뷰가 없습니다.</p>
+					    <%
+					        }
+					    %>
 					</div>
+
 				</div>
 			</div>
 			<div id="notices" class="content-area">
@@ -307,93 +461,52 @@
 	</div>
 
 
-	<script>
-        // JavaScript를 JSP에 삽입
-        document.addEventListener("DOMContentLoaded", () => {
-            const tabs = document.querySelectorAll(".tab");
-
-            tabs.forEach(tab => {
-                tab.addEventListener("click", () => {
-                    // 기존 활성화된 탭을 비활성화
-                    tabs.forEach(t => t.classList.remove("active"));
-                    tab.classList.add("active");
-
-                    // 클릭한 탭의 대상 섹션으로 스크롤 이동
-                    const targetId = tab.getAttribute("data-target");
-                    const targetSection = document.querySelector(targetId);
-                    if (targetSection) {
-                        window.scrollTo({
-                            top: targetSection.offsetTop - 100, // 고정된 메뉴바 높이를 고려하여 조정
-                            behavior: "smooth",
-                        });
-                    }
-                });
-
-            });
-        });
-
-        document.querySelector('.tab').click();
-    
-    // 리뷰 폼 제출 이벤트
-    document.getElementById('reviewForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // 기본 폼 제출 방지
-
-        // 폼 데이터 가져오기
-        const traffic = document.querySelector('input[name="traffic"]').value;
-        const parking = document.querySelector('input[name="parking"]').value;
-        const ambiance = document.querySelector('input[name="ambiance"]').value;
-        const price = document.querySelector('input[name="price"]').value;
-        const location = document.querySelector('input[name="location"]').value;
-        const reviewText = document.querySelector('textarea[name="reviewText"]').value;
-     
-        // 새로운 리뷰 요소 생성
-        const reviewContainer = document.createElement('div');
-        reviewContainer.className = 'submitted-review';
-        reviewContainer.innerHTML = `
-            <p><strong>교통:</strong> ${traffic}, <strong>주차:</strong> ${parking}, 
-            <strong>분위기:</strong> ${ambiance}, <strong>가격:</strong> ${price}, 
-            <strong>위치:</strong> ${location}</p>
-            <p>${reviewText}</p>
-            <hr>
-        `;
-
-        // 작성된 리뷰 추가
-        document.getElementById('submitted-reviews').appendChild(reviewContainer);
-
-        // 폼 초기화
-        event.target.reset();
-    });
-    
- // 두 하트를 동기화하여 함께 작동하도록 설정
-    document.querySelectorAll('.heart-icon img').forEach(icon => {
-        icon.addEventListener('click', () => {
-            const allIcons = document.querySelectorAll('.heart-icon img'); // 모든 하트 아이콘 가져오기
-            const isFilled = icon.getAttribute('src') === '../images/fullheart.png';
-            const newSrc = isFilled ? '../images/heart.png' : '../images/fullheart.png';
-
-            // 모든 하트 아이콘의 src를 동기화
-            allIcons.forEach(icon => {
-                icon.setAttribute('src', newSrc);
-            });
-        });
-    });
-
- // 후기 더보기 버튼 클릭 시 "후기" 탭으로 이동
-    document.getElementById("moreReviewsButton").addEventListener("click", () => {
-        // 모든 탭의 활성화 클래스 제거
-        document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
-        document.querySelectorAll(".content-area").forEach(content => content.classList.remove("active"));
-
-        // "후기" 탭 활성화
-        const reviewTab = document.querySelector(".tab[data-target='#reviews']");
-        const reviewContent = document.getElementById("reviews");
-        reviewTab.classList.add("active");
-        reviewContent.classList.add("active");
-
-        // "후기" 섹션으로 스크롤 이동
-        reviewContent.scrollIntoView({ behavior: "smooth" });
-    });
-</script>
+	 <script>
+	        document.querySelectorAll('.tab').forEach(tab => {
+	            tab.addEventListener('click', () => {
+	                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+	                tab.classList.add('active');
+	                document.querySelectorAll('.content-area').forEach(content => content.classList.remove('active'));
+	                const target = document.querySelector(tab.getAttribute('data-target'));
+	                target.classList.add('active');
+	                target.scrollIntoView({ behavior: 'smooth' });
+	            });
+	        });
+	
+	        document.querySelector('.tab').click();
+	   
+	    
+	    
+	 // 두 하트를 동기화하여 함께 작동하도록 설정
+	    document.querySelectorAll('.heart-icon img').forEach(icon => {
+	        icon.addEventListener('click', () => {
+	            const allIcons = document.querySelectorAll('.heart-icon img'); // 모든 하트 아이콘 가져오기
+	            const isFilled = icon.getAttribute('src') === '../images/fullheart.png';
+	            const newSrc = isFilled ? '../images/heart.png' : '../images/fullheart.png';
+	
+	            // 모든 하트 아이콘의 src를 동기화
+	            allIcons.forEach(icon => {
+	                icon.setAttribute('src', newSrc);
+	            });
+	        });
+	    });
+	
+	 // 후기 더보기 버튼 클릭 시 "후기" 탭으로 이동
+	    document.getElementById("moreReviewsButton").addEventListener("click", () => {
+	        // 모든 탭의 활성화 클래스 제거
+	        document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
+	        document.querySelectorAll(".content-area").forEach(content => content.classList.remove("active"));
+	
+	        // "후기" 탭 활성화
+	        const reviewTab = document.querySelector(".tab[data-target='#reviews']");
+	        const reviewContent = document.getElementById("reviews");
+	        reviewTab.classList.add("active");
+	        reviewContent.classList.add("active");
+	
+	        // "후기" 섹션으로 스크롤 이동
+	        reviewContent.scrollIntoView({ behavior: "smooth" });
+	    });
+	</script>
     
 </body>
 </html>

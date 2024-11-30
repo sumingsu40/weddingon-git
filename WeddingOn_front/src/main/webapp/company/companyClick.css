@@ -166,7 +166,7 @@ body {
 }
 
 .action-buttons .chat-btn {
-	width: 90%;
+   width: 90%;
     background: #FAD1E3;
     border: none;
     padding: 10px 20px;
@@ -187,7 +187,7 @@ body {
 }
 
 .left-section {
-	width: 60%; 
+   width: 60%; 
     box-sizing: border-box; 
 }
 
