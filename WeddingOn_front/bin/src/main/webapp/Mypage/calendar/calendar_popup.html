@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>일정 추가</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        h2 {
+            color: #FF6699;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #eee;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #FF6699;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #FF3366;
+        }
+        .close-button {
+            background-color: #CCCCCC;
+            color: #333;
+            margin-top: 10px;
+        }
+        .close-button:hover {
+            background-color: #AAAAAA;
+        }
+    </style>
+</head>
+<body>
+    <h2>일정 추가</h2>
+    <p id="popup-date"></p>
+    <input type="text" id="eventTitle" placeholder="일정 제목 입력">
+    <br>
+    <button id="addButton">추가</button>
+    <button class="close-button" id="closeButton">닫기</button>
+</body>
+<script>
+    // URL에서 날짜 가져오기
+    const urlParams = new URLSearchParams(window.location.search);
+    const date = urlParams.get("date");
+    document.getElementById("popup-date").textContent = `날짜: ${date}`;
+
+    // 이벤트 추가 함수
+    function addEvent() {
+        const eventTitle = document.getElementById("eventTitle").value.trim();
+        if (!eventTitle) {
+            alert("일정 제목을 입력하세요.");
+            return;
+        }
+
+        // 데이터 전송
+        fetch("insertCalendarEvent.jsp", {
+            method: "POST",
+            headers: {
+            	 "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: new URLSearchParams({
+                date: date,
+                title: eventTitle,
+            }),
+        })
+            .then((response) => response.text())
+            .then((data) => {
+                alert(data); // 서버 응답 표시
+                closePopup(); // 팝업 닫기
+            })
+            .catch((error) => {
+                console.error("오류 발생:", error);
+                alert("일정 추가 중 오류가 발생했습니다.");
+            });
+    }
+
+    // 팝업 닫기 함수
+    function closePopup() {
+        window.parent.document.getElementById("popupFrame").classList.add("hidden");
+    }
+
+    // 버튼 클릭 이벤트 연결
+    document.getElementById("addButton").addEventListener("click", addEvent);
+    document.getElementById("closeButton").addEventListener("click", closePopup);
+</script>
+</html>
