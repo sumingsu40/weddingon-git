@@ -50,14 +50,17 @@
     }
 
     .post-content {
-        font-size: 16px;
-        color: #333;
-        line-height: 1.6;
-        white-space: pre-line;
-        padding-top: 10px;
-        max-height: 300px;
-    	overflow-y: auto;
-    }
+	    font-size: 16px;
+	    color: #333;
+	    line-height: 1.6;
+	    white-space: pre-line; /* 줄바꿈 유지 */
+	    padding-top: 10px;
+	    max-height: 300px;
+	    overflow-y: auto; /* 내용이 많을 경우 세로 스크롤 */
+	    word-wrap: break-word; /* 긴 단어를 줄바꿈 */
+	    overflow-wrap: break-word; /* 긴 단어를 줄바꿈 */
+	}
+
 
     .comment-section {
         margin-top: 20px;

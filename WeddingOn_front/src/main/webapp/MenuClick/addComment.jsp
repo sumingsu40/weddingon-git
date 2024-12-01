@@ -15,8 +15,9 @@
     String postId = request.getParameter("postId");
     String content = request.getParameter("content");
     
-    Object userDbIdObj = session.getAttribute("userDbId");
     String id = (String) session.getAttribute("userId");
+    
+    Object userDbIdObj = session.getAttribute("userDbId");
     String userId = userDbIdObj != null ? userDbIdObj.toString() : null;
 
     response.setContentType("application/json");

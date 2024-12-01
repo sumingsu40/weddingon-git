@@ -9,6 +9,9 @@
     Connection conn = null;
     PreparedStatement pstmt = null;
     ResultSet rs = null;
+    
+    PreparedStatement countStmt = null;
+    ResultSet countRs = null;
 
     // 데이터베이스 연결 정보
     String dbURL = "jdbc:mysql://weddingondb.cni2gssosrpi.ap-southeast-2.rds.amazonaws.com:3306/weddingonDB?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
@@ -36,6 +39,7 @@
     int offset = (currentPage - 1) * postsPerPage; // OFFSET 계산
 
     JSONArray postsArray = new JSONArray(); // JSON 배열 생성
+    int totalPosts = 0;
 
     try {
         // JDBC 드라이버 로드 및 DB 연결
@@ -62,9 +66,21 @@
 
             postsArray.put(post);
         }
+        
+        String countSql = "SELECT COUNT(*) AS total FROM posts";
+        countStmt = conn.prepareStatement(countSql);
+        countRs = countStmt.executeQuery();
 
+        if (countRs.next()) {
+            totalPosts = countRs.getInt("total");
+        }
+		
+        JSONObject jsonResponse = new JSONObject();
+        jsonResponse.put("posts", postsArray);
+        jsonResponse.put("totalPosts", totalPosts);
+        
         // JSON 배열 출력
-        response.getWriter().write(postsArray.toString());
+        response.getWriter().write(jsonResponse.toString());
 
     } catch (Exception e) {
         e.printStackTrace();
