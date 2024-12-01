@@ -305,7 +305,9 @@
 	                    <small>작성일: `+result.createdAt+`</small>
 	                `;
 
-	                commentList.prepend(comment);
+	                commentList.prepend(comment);	
+	                
+	                commentInput.value = '';
 	            } else {
 	                console.error("댓글 추가 실패:", result.message);
 	            }
