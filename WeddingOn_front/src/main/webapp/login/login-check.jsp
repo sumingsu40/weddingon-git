@@ -49,7 +49,7 @@
             System.out.println("userId: " + userId);
             System.out.println("username: " + username);
             
-            response.sendRedirect("../Main-loadmap/index.jsp"); // 메인 페이지로 이동
+            response.sendRedirect("../Main-loadmap/loadmap.jsp"); // 메인 페이지로 이동
         } else {
             // 로그인 실패
             message = "로그인 실패: 아이디 또는 비밀번호가 일치하지 않습니다.";

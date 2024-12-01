@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="java.io.*" %>
+<%@ page import="java.sql.*, java.text.SimpleDateFormat" %>
 
 <%@ page session="true" %>
 
@@ -15,6 +16,7 @@
     String content = request.getParameter("content");
     
     Object userDbIdObj = session.getAttribute("userDbId");
+    String id = (String) session.getAttribute("userId");
     String userId = userDbIdObj != null ? userDbIdObj.toString() : null;
 
     response.setContentType("application/json");
@@ -34,8 +36,11 @@
 
         int rows = pstmt.executeUpdate();
         
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = sdf.format(new java.util.Date());
+        
         if (rows > 0) {
-            out.write("{\"status\":\"success\", \"userId\":\"" + userId + "\", \"createdAt\":\"" + new java.util.Date() + "\"}");
+            out.print("{\"status\":\"success\",\"userId\":\"" + id + "\",\"content\":\"" + content + "\",\"createdAt\":\"" + formattedDate + "\"}");
         } else {
             out.write("{\"status\":\"error\", \"message\":\"Failed to add comment.\"}");
         }
