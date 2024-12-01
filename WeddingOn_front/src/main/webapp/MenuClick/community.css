@@ -70,14 +70,18 @@ body {
 }
 
 .post-card h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #333;
+    margin: 0 0 8px; /* 제목 아래 여백 */
+    font-size: 18px; /* 제목 크기 */
+    color: #333; 
 }
 
 .post-card p {
+    margin: 0;
     font-size: 14px;
     color: #666;
+    white-space: nowrap; /* 한 줄로 표시 */
+    overflow: hidden;
+    text-overflow: ellipsis; /* 긴 텍스트 말줄임표 */
 }
 
 .pagination {
