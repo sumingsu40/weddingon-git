@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page session="true" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,69 +34,110 @@
     </div>
 
     <script>
-        const posts = [
-            '여기서 결혼은 두번째?',
-            '웨딩홀 추천 부탁드려요!',
-            '드레스 투어 후기 공유',
-            '스튜디오 선택 고민입니다.',
-            '청첩장 디자인 뭐가 좋을까요?',
-        ];
 
-        const postsPerPage = 6;
-        let currentPage = 1;
+	    const postsPerPage = 10;
+	    let currentPage = 1;
+	
+	    function renderPosts(posts) {
+	        const postList = document.getElementById('postList'); // 게시글 컨테이너
+	        postList.innerHTML = ''; // 기존 게시글 초기화
+			
+	        const reversedPosts = [...posts].reverse();
+	        
+	        reversedPosts.forEach(post => {
+	            const postCard = document.createElement('div');
+	            postCard.className = 'post-card';
 
-        function renderPosts(page) {
-            const postList = document.getElementById('postList');
-            postList.innerHTML = '';
+	            // 제목 생성
+	            const postTitle = document.createElement('h3');
+	            postTitle.textContent = post.title;
 
-            const startIndex = (page - 1) * postsPerPage;
-            const endIndex = startIndex + postsPerPage;
-            const currentPosts = posts.slice(startIndex, endIndex);
+	            // 내용 생성
+	            const postContent = document.createElement('p');
+	            postContent.textContent = post.content;
 
-            currentPosts.forEach(post => {
-                const postCard = document.createElement('div');
-                postCard.className = 'post-card';
-                postCard.innerHTML = `
-                    <h3>${post}</h3>
-                    <p>내용이 들어갑니다...</p>
-                `;
-                postList.appendChild(postCard);
-            });
-        }
 
-        document.querySelectorAll('.page-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                currentPage = parseInt(button.getAttribute('data-page'));
-                renderPosts(currentPage);
+	            // postCard에 요소 추가
+	            postCard.appendChild(postTitle);
+	            postCard.appendChild(postContent);
 
-                document.querySelectorAll('.page-btn').forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-            });
-        });
+	            // 클릭 이벤트 추가
+	            postCard.addEventListener('click', () => {
+	                window.location.href = `community-click.jsp?postId=`+post.post_id;
+	                console.log(post.post_id);
+	            });
 
-        document.querySelector('.new-post-icon').addEventListener('click', () => {
-            const container = document.getElementById('communityContainer');
-            const writePost = document.getElementById('writePost');
+	            // postList에 postCard 추가
+	            postList.appendChild(postCard);
+	        });
+	    }
 
-            container.classList.toggle('shift');
-            writePost.classList.toggle('hidden');
-        });
+	
+	    async function fetchPosts(page) {
+	        try {
+	            const url = `fetchPosts.jsp?page=`+page;
+	            console.log("Request URL: ", url); // URL 로그 추가
+	            const response = await fetch(url);
 
-        document.getElementById('savePost').addEventListener('click', () => {
-            const container = document.getElementById('communityContainer');
-            const writePost = document.getElementById('writePost');
+	            if (!response.ok) {
+	                throw new Error('Network response was not ok');
+	            }
 
-            container.classList.remove('shift');
-            writePost.classList.add('hidden');
-        });
+	            const posts = await response.json();
 
-        document.getElementById('resetPost').addEventListener('click', () => {
-            document.querySelector('.write-post-title').value = '';
-            document.querySelector('.write-post-text').value = '';
-            document.querySelector('.write-post-hashtags').value = '';
-        });
+	            if (Array.isArray(posts)) {
+	                renderPosts(posts);
+	            } else {
+	                console.error('Invalid response format:', posts);
+	            }
+	        } catch (error) {
+	            console.error('Error fetching posts:', error);
+	        }
+	    }
 
-        renderPosts(currentPage);
-    </script>
+
+
+	
+	    document.querySelectorAll('.page-btn').forEach(button => {
+	        button.addEventListener('click', () => {
+	            currentPage = parseInt(button.getAttribute('data-page')); // data-page 값을 가져옴
+	            console.log("Clicked page: ", currentPage);
+	            fetchPosts(currentPage); // 페이지 번호와 함께 fetchPosts 호출
+
+	            // 활성화된 버튼 강조
+	            document.querySelectorAll('.page-btn').forEach(btn => btn.classList.remove('active'));
+	            button.classList.add('active');
+	        });
+	    });
+
+	
+	    document.querySelector('.new-post-icon').addEventListener('click', () => {
+	        const container = document.getElementById('communityContainer');
+	        const writePost = document.getElementById('writePost');
+	
+	        container.classList.toggle('shift');
+	        writePost.classList.toggle('hidden');
+	    });
+	
+	    document.getElementById('savePost').addEventListener('click', () => {
+	        const container = document.getElementById('communityContainer');
+	        const writePost = document.getElementById('writePost');
+	
+	        container.classList.remove('shift');
+	        writePost.classList.add('hidden');
+	    });
+	
+	    document.getElementById('resetPost').addEventListener('click', () => {
+	        document.querySelector('.write-post-title').value = '';
+	        document.querySelector('.write-post-text').value = '';
+	        document.querySelector('.write-post-hashtags').value = '';
+	    });
+	
+	    // 첫 번째 페이지 데이터 가져오기
+	    fetchPosts(1);
+	
+	
+	</script>
+
 </body>
 </html>
