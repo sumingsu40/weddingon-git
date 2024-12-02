@@ -100,6 +100,7 @@
             try {
                 Integer userDbId = (Integer) session.getAttribute("userDbId");
                 if (userDbId == null) {
+                	response.sendRedirect("../login/login.jsp");
                     out.println("<p>로그인 후 이용해주세요.</p>");
                     return;
                 }
