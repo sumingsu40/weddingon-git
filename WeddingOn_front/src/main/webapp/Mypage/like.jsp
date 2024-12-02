@@ -32,9 +32,10 @@
 
         rs = pstmt.executeQuery();
         while (rs.next()) {
+            int companyId = rs.getInt("company_id");
             String companyName = rs.getString("company_name");
 
-            likeList.append("<div class='company'>")
+            likeList.append("<div class='company' onclick=\"goToCompany(").append(companyId).append(")\">")
                     .append("<div class='profile'>프로필</div>")
                     .append("<div class='name'>").append(companyName).append("</div>")
                     .append("<div class='like'><img src='images/like-icon.png'></div>")
@@ -59,6 +60,13 @@
     <meta charset="UTF-8">
     <title>관심 업체</title>
     <link rel="stylesheet" type="text/css" href="Like.css">
+    <script>
+        // 기업 상세 페이지로 이동하는 함수
+        function goToCompany(companyId) {
+            // 기업 상세 페이지로 이동 (URL은 실제 상세 페이지 경로에 맞게 수정)
+            window.location.href = `../company/companyClick.jsp?companyId=`+companyId;
+        }
+    </script>
 </head>
 <body>
     <div id="likeSection">

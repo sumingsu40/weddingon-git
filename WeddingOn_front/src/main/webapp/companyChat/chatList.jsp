@@ -103,9 +103,12 @@
             try {
                 Integer companyId = (Integer) session.getAttribute("companyId"); // 세션에서 기업 ID 가져오기
                 if (companyId == null) {
+                	response.sendRedirect("../login/login.jsp");
                     out.println("<p>로그인 후 이용해주세요.</p>");
                     return;
                 }
+                
+                
 
                 // 채팅목록 조회
                 String sql = "SELECT m.sender_id, " +

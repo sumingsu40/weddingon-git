@@ -4,8 +4,8 @@
 
 <%
     // 사용자 세션 확인
-    String userId = (String) session.getAttribute("userId");
-    if (userId == null) {
+    Integer userDbId = (Integer) session.getAttribute("userDbId");
+    if (userDbId == null) {
         response.sendRedirect("../login/login.jsp");
         return;
     }
@@ -16,10 +16,13 @@
     String dbPassword = "solution";
 
     // 사용자 정보 변수
+    String userAccountId = ""; // id 컬럼 값
     String name = "";
     String birthDate = "";
     String email = "";
     String phone = "";
+    String isCompany = "";
+    String companyId = null;
 
     Connection conn = null;
     PreparedStatement pstmt = null;
@@ -29,16 +32,19 @@
         Class.forName("com.mysql.cj.jdbc.Driver");
         conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
 
-        String sql = "SELECT nickname, name, birth_date, email, phone FROM users WHERE id = ?";
+        String sql = "SELECT id, name, birth_date, email, phone_num, is_company, company_id FROM users WHERE userID = ?";
         pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, userId);
+        pstmt.setInt(1, userDbId);
 
         rs = pstmt.executeQuery();
         if (rs.next()) {
+            userAccountId = rs.getString("id"); // 사용자 계정 ID
             name = rs.getString("name");
-            birthDate = rs.getString("birth_date");
+            birthDate = rs.getString("birth_date") != null ? rs.getString("birth_date") : "등록되지 않음";
             email = rs.getString("email");
-            phone = rs.getString("phone");
+            phone = rs.getString("phone_num");
+            isCompany = rs.getInt("is_company") == 1 ? "기업 계정" : "일반 사용자";
+            companyId = rs.getString("company_id") != null ? rs.getString("company_id") : "N/A";
         }
     } catch (Exception e) {
         e.printStackTrace();
@@ -69,8 +75,8 @@
         <div class="profile-info">
             <table class="profile-table">
                 <tr>
-                    <th>닉네임 (아이디)</th>
-                    <td><%=userId %></td>
+                    <th>사용자 계정 ID</th>
+                    <td><%=userAccountId %></td>
                 </tr>
                 <tr>
                     <th>이름</th>
@@ -88,6 +94,16 @@
                     <th>전화번호</th>
                     <td><%=phone %></td>
                 </tr>
+                <tr>
+                    <th>계정 유형</th>
+                    <td><%=isCompany %></td>
+                </tr>
+                <% if (isCompany.equals("기업 계정")) { %>
+                <tr>
+                    <th>회사 ID</th>
+                    <td><%=companyId %></td>
+                </tr>
+                <% } %>
             </table>
         </div>
 
@@ -96,8 +112,8 @@
             <h3>로그인 관리</h3>
             <table class="login-table">
                 <tr>
-                    <th>아이디</th>
-                    <td><%=userId %></td>
+                    <th>사용자 계정 ID</th>
+                    <td><%=userAccountId %></td>
                 </tr>
                 <tr>
                     <th>비밀번호</th>
