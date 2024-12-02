@@ -9,12 +9,14 @@
     <title>채팅방</title>
     <link rel="stylesheet" href="chat.css">
     <script>
-        function openChat(chatName, companyName) {
+        function openChat(chatId, companyName) {
             const chatPopup = document.getElementById("chatPopup");
             const companyElement = document.getElementById("chatCompanyName");
+            const chatTitleElement = document.getElementById("chatTitle");
 
             // 동적으로 채팅방 정보 업데이트
             companyElement.textContent = companyName;
+            chatTitleElement.textContent = `채팅방: ${chatId}`; // 채팅방 제목에 chat_id 표시
 
             // 오른쪽 슬라이드 효과로 팝업 표시
             chatPopup.style.transform = "translateX(0)";
@@ -70,15 +72,16 @@
                 // 데이터베이스 연결
                 conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
 
-                // sender_id가 userDbId이고, sender_type이 0인 chat_id 기준으로 고유한 채팅목록 가져오기
+                // chat_id를 기준으로 company_id의 기업 이름과 마지막 메시지 조회
                 String sql = "SELECT DISTINCT m.chat_id, " +
-                             "       m.receiver_id, " +
-                             "       (SELECT name FROM users WHERE userID = m.receiver_id) AS company_name, " +
+                             "       c.company_id, " +
+                             "       (SELECT name FROM users WHERE userID = c.company_id) AS company_name, " +
                              "       (SELECT message_text FROM messages WHERE chat_id = m.chat_id ORDER BY sent_at DESC LIMIT 1) AS last_message " +
                              "FROM messages m " +
+                             "JOIN company c ON m.receiver_id = c.company_id " +
                              "WHERE m.sender_id = ? AND m.sender_type = 0 " +
-                             "GROUP BY m.chat_id " +
                              "ORDER BY MAX(m.sent_at) DESC";
+                             
                 pstmt = conn.prepareStatement(sql);
                 pstmt.setInt(1, userDbId);
 
@@ -113,6 +116,7 @@
     <div id="chatPopup" class="chat-popup">
         <div class="chat-header">
             <span id="chatCompanyName">업체명</span>
+            <span id="chatTitle" class="chat-title"></span>
             <button onclick="closeChat()">X</button>
         </div>
         <div class="chat-body" id="chatBody">
