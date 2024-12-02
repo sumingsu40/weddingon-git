@@ -70,10 +70,8 @@
                 .then((response) => response.json())
                 .then((result) => {
                     if (result.status === "success") {
-                        const newMessage = document.createElement("div");
-                        newMessage.className = "chat-message sent";
-                        newMessage.textContent = message;
-                        chatBody.appendChild(newMessage);
+                    	 openChat(companyId, receiverId, document.getElementById("chatCompanyName").textContent);
+                    	 
                         chatInput.value = ""; // 입력 필드 초기화
                         chatBody.scrollTop = chatBody.scrollHeight; // 스크롤 하단 이동
                     } else {
