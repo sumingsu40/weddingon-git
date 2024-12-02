@@ -93,7 +93,7 @@
     </div>
     <div class="sidebar">
         <div class="menu_item selected" data-target="like.jsp">관심 업체</div>
-        <div class="menu_item" data-target="chat.jsp">채팅방</div>
+        <div class="menu_item" data-target="../chat/chat.jsp">채팅방</div>
         <div class="menu_item" data-target="../chat/chatPopup.jsp?companyId=1">채팅테스트</div>
         <div class="menu_item" data-target="calendar.html">캘린더</div>
         <div class="menu_item" data-target="mywriting.html">내가 쓴 글</div>
