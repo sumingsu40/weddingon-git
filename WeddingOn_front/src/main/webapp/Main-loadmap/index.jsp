@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page session="true" %>
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -112,29 +110,53 @@
         </div>
     </div>
 
-    <script>
+<script>
+    // iframe의 src 동기화 및 URL 업데이트
+    function syncIframeFromUrl() {
+        const iframe = document.getElementById('contentFrame');
+        const urlParams = new URLSearchParams(window.location.search);
+        const iframeSrc = urlParams.get('iframeSrc');
+
+        if (iframeSrc && iframe) {
+            iframe.src = iframeSrc; // URL에 저장된 iframeSrc로 iframe 업데이트
+        }
+    }
+
+    function updateUrlForIframe(newIframeSrc) {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('iframeSrc', newIframeSrc); // iframeSrc 파라미터 설정
+        const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+        window.history.replaceState(null, '', newUrl); // URL 갱신
+    }
+
+    // 페이지 로드 시 iframe 초기화
+    document.addEventListener('DOMContentLoaded', () => {
+        syncIframeFromUrl();
+
         const menuItems = document.querySelectorAll('.menu_item');
         const iframe = document.getElementById('contentFrame');
         const logo = document.querySelector('.logo');
-        const myPageIcon = document.querySelector('.mypage'); // 마이페이지 아이콘 선택
+        const myPageIcon = document.querySelector('.mypage');
 
         menuItems.forEach(item => {
             item.addEventListener('click', () => {
                 menuItems.forEach(i => i.classList.remove('active'));
                 item.classList.add('active');
                 const page = item.getAttribute('data-page');
-                iframe.src = page;
+                iframe.src = page; // iframe 내용 변경
+                updateUrlForIframe(page); // URL 동기화
             });
         });
 
         logo.addEventListener('click', () => {
-            iframe.src = '../MenuClick/community.jsp';
-            menuItems.forEach(i => i.classList.remove('active'));
+            window.location.href = 'loadmap.jsp'; // 전체 페이지 이동
         });
 
         myPageIcon.addEventListener('click', () => {
-            window.location.href = '../Mypage/mypage.jsp';
+            window.location.href = '../Mypage/mypage.jsp'; // 전체 페이지 이동
         });
-    </script>
+    });
+</script>
+
 </body>
 </html>

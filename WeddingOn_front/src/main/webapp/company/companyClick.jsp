@@ -157,6 +157,22 @@
     double locationWidth = locationRatingAvg * 20;
 %>
 
+<%
+    boolean isFavorite = false;
+
+    try (Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
+         PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM favorites WHERE user_id = ? AND company_id = ?")) {
+        pstmt.setInt(1, (Integer) session.getAttribute("userDbId"));
+        pstmt.setInt(2, Integer.parseInt(companyId));
+        try (ResultSet rs = pstmt.executeQuery()) {
+            if (rs.next()) {
+                isFavorite = true;
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+%>
 
 
 <!DOCTYPE html>
@@ -210,10 +226,10 @@
 
          <div class="right-section">
             <div class="action-buttons">
-               <button class="chat-btn">채팅 하기</button>
+               <div class="chat-btn" onclick="startChat('<%= companyId %>')">채팅하기</div>
                <div class="heart-icon">
                   <!-- heart-icon 클래스를 추가 -->
-                  <img src="../images/heart.png" alt="찜 버튼" />
+                  <img src="../images/<%= isFavorite ? "fullheart.png" : "heart.png" %>" alt="찜 버튼" />
                </div>
                <img src="../images/share.png" alt="공유 버튼" class="share-icon" />
             </div>
@@ -421,24 +437,73 @@
    <div class="bottom-bar">
       <div class="heart-icon">
          <!-- heart-icon 클래스를 추가 -->
-         <img src="../images/heart.png" alt="찜 버튼" />
+         <img src="../images/<%= isFavorite ? "fullheart.png" : "heart.png" %>" alt="찜 버튼" />
       </div>
-      <div class="chat-btn">채팅하기</div>
+      <div class="chat-btn" onclick="startChat('<%= companyId %>')">채팅하기</div>
    </div>
 
 
-    <script>
+    <script>                 
+	    function startChat(companyId) {
+	        if (!companyId) {
+	            alert("회사 정보를 확인할 수 없습니다.");
+	            return;
+	        }
+	
+	        // 채팅 팝업 페이지로 이동
+	        window.location.href = `../chat/chatPopup.jsp?company_id=`+companyId;
+	    }
+
           
-    // 두 하트를 동기화하여 함께 작동하도록 설정
-       document.querySelectorAll('.heart-icon img').forEach(icon => {
-           icon.addEventListener('click', () => {
-               const allIcons = document.querySelectorAll('.heart-icon img'); // 모든 하트 아이콘 가져오기
-               const isFilled = icon.getAttribute('src') === '../images/fullheart.png';
-               const newSrc = isFilled ? '../images/heart.png' : '../images/fullheart.png';
+    	document.addEventListener('DOMContentLoaded', () => {
+          const heartIcons = document.querySelectorAll('.heart-icon img'); // 모든 하트 아이콘 가져오기
+
+          heartIcons.forEach((heartIcon) => {
+              heartIcon.addEventListener('click', async () => {
+                  console.log("Heart icon clicked");
+
+                  const userId = "<%= session.getAttribute("userDbId") %>"; // 세션에서 사용자 ID 가져오기
+                  const companyId = "<%= companyId %>"; // 회사 ID
+
+                  if (!userId || !companyId) {
+                      alert("로그인 후 사용해주세요.");
+                      return;
+                  }
+
+                  try {
+                      // 서버에 좋아요/취소 요청 보내기
+                      const response = await fetch('addFavorite.jsp', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                          body: `userId=`+userId+`&companyId=`+companyId
+                      });
+
+                      const result = await response.json(); // 서버 응답 처리
+                      console.log(result);
+
+                      if (result.status === 'success') {
+                          if (result.message === 'Favorite added') {
+                              heartIcons.forEach(icon => {
+                                  icon.src = "../images/fullheart.png"; // 모든 하트 아이콘을 채워진 하트로 변경
+                              });
+                              alert("좋아요가 추가되었습니다.");
+                          } else if (result.message === 'Favorite removed') {
+                              heartIcons.forEach(icon => {
+                                  icon.src = "../images/heart.png"; // 모든 하트 아이콘을 빈 하트로 변경
+                              });
+                              alert("좋아요가 취소되었습니다.");
+                          }
+                      } else {
+                          alert(result.message || "요청 처리 중 오류 발생");
+                      }
+                  } catch (error) {
+                      console.error('Error:', error);
+                      alert("요청 처리 중 문제가 발생했습니다.");
+                  }
+              });
+          });
+      });
    
-               // 모든 하트 아이콘의 src를 동기화
-               allIcons.forEach(icon => {
-                   icon.setAttribute('src', newSrc);
                });
            });
        });
@@ -587,3 +652,4 @@
     
 </body>
 </html>
+

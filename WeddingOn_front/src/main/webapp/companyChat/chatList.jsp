@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%@ page session="true" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -69,10 +70,8 @@
                 .then((response) => response.json())
                 .then((result) => {
                     if (result.status === "success") {
-                        const newMessage = document.createElement("div");
-                        newMessage.className = "chat-message sent";
-                        newMessage.textContent = message;
-                        chatBody.appendChild(newMessage);
+                    	 openChat(companyId, receiverId, document.getElementById("chatCompanyName").textContent);
+                    	 
                         chatInput.value = ""; // 입력 필드 초기화
                         chatBody.scrollTop = chatBody.scrollHeight; // 스크롤 하단 이동
                     } else {
@@ -102,9 +101,12 @@
             try {
                 Integer companyId = (Integer) session.getAttribute("companyId"); // 세션에서 기업 ID 가져오기
                 if (companyId == null) {
+                	response.sendRedirect("../login/login.jsp");
                     out.println("<p>로그인 후 이용해주세요.</p>");
                     return;
                 }
+                
+                
 
                 // 채팅목록 조회
                 String sql = "SELECT m.sender_id, " +
