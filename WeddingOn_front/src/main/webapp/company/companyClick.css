@@ -16,106 +16,11 @@ body {
     padding-bottom: 75px; /* 하단바 높이만큼 추가 */
 }
 
-/* 상단 검색바 */
-.top_bar {
-    width: 100%;
-    height: 96px;
-    background-color: #FCE0EC;
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    z-index: 1000;
-}
-
-.search_container {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    align-items: center;
-}
-
-.search_icon {
-    height: 47px;
-    width: 450px;
-    border-radius: 20px;
-    padding-left: 20px;
-    border: 1px solid #ccc;
-    margin-right: 10px;
-}
-
-.search_button {
-    width: 53px;
-    height: 47px;
-    border-radius: 20px;
-    background-color: white;
-    border: 1px solid #ccc;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.logo {
-    position: absolute;
-    left: 40px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.Mypage {
-    position: absolute;
-    right: 40px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-/* 메뉴바 */
-.menu_bar {
-    display: flex;
-    width: 100%;
-    height: 68px;
-    background-color: #F6CDCD;
-    position: fixed;
-    top: 96px;
-    left: 0;
-    justify-content: space-between;
-    z-index: 999;
-}
-
-.box {
-    display: flex;
-    flex: 1;
-    text-align: center;
-    border-right: 1px solid #ccc;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.box:last-child {
-    border-right: none;
-}
-
-#menu-icon {
-    margin-top: 5px;
-    width: 41px;
-    height: 33px;
-    margin-bottom: 2px;
-}
-
-
 /* 본문 내용 */
 .container {
     width: 100vw;
     max-width: 1200px;
-    margin-top: 180px;
-    padding: 20px;
+    padding: 0px;
     box-sizing: border-box;
 }
 
@@ -156,30 +61,50 @@ body {
 }
 
 
-/* 오른쪽 섹션 액션 버튼 */
 .action-buttons {
     display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-bottom: 20px;
-    gap: 15px;
+    justify-content: space-between; /* 버튼 간 간격을 균등하게 */
+    align-items: center; /* 세로 가운데 정렬 */
+    gap: 10px; /* 버튼 간격 */
+    border: 1px solid #CAC4D0;
+    background-color: #FFF;
+    padding: 10px; /* 버튼과 박스 경계 간의 여백 */
+    border-radius: 10px;
 }
 
+
 .action-buttons .chat-btn {
-   width: 90%;
+    flex: 1; /* 남은 공간을 균등하게 분배 */
     background: #FAD1E3;
     border: none;
-    padding: 10px 20px;
     border-radius: 20px;
     font-size: 16px;
+    text-align: center;
     cursor: pointer;
+    display: flex;
+    justify-content: center; /* 가로 가운데 정렬 */
+    align-items: center; /* 세로 가운데 정렬 */
+    height: 44px; /* 높이를 다른 아이콘과 통일 */
 }
+
 
 .action-buttons .share-icon {
     width: 44px;
     height: 44px;
     cursor: pointer;
+    display: flex; /* 플렉스 박스 사용 */
+    justify-content: center; /* 가로 가운데 정렬 */
+    align-items: center; /* 세로 가운데 정렬 */
     transition: transform 0.3s;
+}
+
+.action-buttons .heart-icon {
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .action-buttons .share-icon:hover {
@@ -197,7 +122,7 @@ body {
 }
 
 .right-section {
-    width: 38%;
+    width: 39%;
     max-height: 500px;
     box-sizing: border-box; 
 }
@@ -205,7 +130,7 @@ body {
 .container2 {
     display: flex; /* Makes the sections sit side-by-side */
     justify-content: space-between; /* Adds space between the two sections */
-    gap: 2%; /* Adds consistent spacing between sections */
+    gap: 1%; /* Adds consistent spacing between sections */
     margin-top: 15px;
 }
 
@@ -245,29 +170,6 @@ body {
     border-radius: 10px;
     font-size: 14px;
     cursor: pointer;
-}
-
-.tabs {
-    display: flex;
-    gap: 5px;
-    margin-top: 40px; /* 탭 바 위쪽 간격 추가 */
-    margin-bottom: 0px;   
-}
-
-.tab {
-    flex: 1;
-    padding: 15px;
-    text-align: center;
-    background: #F7CDCD;
-    cursor: pointer;
-    border: 1px solid #CCC;
-    border-radius: 5px;
-    transition: background 0.3s;
-}
-
-.tab.active {
-    background: #F9BBBB;
-    font-weight: bold;
 }
 
 .content-area {
@@ -426,7 +328,7 @@ button {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
+    padding: 0 0;
     box-sizing: border-box;
     z-index: 1000;
     border-top: 1px solid #ccc; /* 시각적인 구분선 추가 */
@@ -581,17 +483,58 @@ hr {
     border-top: 1px solid;
     opacity: 0.2;
 }
+.tabs-container {
+    width: 100%;
+    max-width: 1200px;
+    z-index: 1000; /* 상단 고정을 위한 우선순위 */
+    margin: 0;
+    padding: 0; /* 여백 제거 */
+}
+
+.tabs {
+    display: flex;
+    position: relative; /* 기본값 */
+    z-index: 10;
+    margin: 0;
+    padding: 0; /* 불필요한 여백 제거 */
+    border-radius: 0;
+}
+
+.tab {
+    flex: 1;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 0;
+}
+
+.tab.active {
+    background: #F9BBBB; /* 활성화된 탭 버튼의 배경색 */
+    font-weight: bold;
+}
+
+.tab:hover {
+    background: #FAD1E3; /* 호버 시 배경색 변경 */
+    color: #333; /* 호버 시 텍스트 색상 변경 */
+}
 
 .sticky-tabs {
     position: fixed;
-    top: 96px;
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
     max-width: 1200px;
+    display: flex;
+    justify-content: space-around; /* 각 탭 간 간격 균일하게 배치 */
+    align-items: center;
+    height: 50px;
+    box-sizing: border-box;
     z-index: 999;
     background-color: #FFF;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 0 20px;
+    border-radius: 0;
 }
+
+
+
 
