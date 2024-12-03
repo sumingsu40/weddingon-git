@@ -233,7 +233,7 @@
 
          <div class="right-section">
             <div class="action-buttons">
-               <button class="chat-btn">채팅 하기</button>
+               <div class="chat-btn" onclick="startChat('<%= companyId %>')">채팅하기</div>
                <div class="heart-icon">
                   <!-- heart-icon 클래스를 추가 -->
                   <img src="../images/<%= isFavorite ? "fullheart.png" : "heart.png" %>" alt="찜 버튼" />
@@ -446,13 +446,23 @@
          <!-- heart-icon 클래스를 추가 -->
          <img src="../images/<%= isFavorite ? "fullheart.png" : "heart.png" %>" alt="찜 버튼" />
       </div>
-      <div class="chat-btn">채팅하기</div>
+      <div class="chat-btn" onclick="startChat('<%= companyId %>')">채팅하기</div>
    </div>
 
 
     <script>
+	    function startChat(companyId) {
+	        if (!companyId) {
+	            alert("회사 정보를 확인할 수 없습니다.");
+	            return;
+	        }
+	
+	        // 채팅 팝업 페이지로 이동
+	        window.location.href = `../chat/chatPopup.jsp?company_id=`+companyId;
+	    }
+
           
-    document.addEventListener('DOMContentLoaded', () => {
+    	document.addEventListener('DOMContentLoaded', () => {
           const heartIcons = document.querySelectorAll('.heart-icon img'); // 모든 하트 아이콘 가져오기
 
           heartIcons.forEach((heartIcon) => {

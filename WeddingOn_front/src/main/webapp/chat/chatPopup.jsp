@@ -6,7 +6,7 @@
     // 세션 값 가져오기
     Integer userIdInteger = (Integer) session.getAttribute("userDbId");
     String userId = userIdInteger != null ? userIdInteger.toString() : null;
-    String companyId = request.getParameter("companyId");
+    String companyId = request.getParameter("company_id");
 
     String companyName = "업체명"; // 기본값
     String receiverId = null;
@@ -98,9 +98,10 @@
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
                 },
                 body: `senderId=`+userId+`&receiverId=`+receiverId+`&chatId=`+companyId+`&messageText=`+message, })
-            .then(response => response.text())
+            .then(response => response.json())
             .then(data => {
-                if (data.trim() === "success") {
+            	console.log(data);
+                if (data.status === "success") {
                     chatInput.value = '';
                     loadMessages();
                 } else {
