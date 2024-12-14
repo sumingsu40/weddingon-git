@@ -68,10 +68,10 @@
     <div class="page slide-in">
         <!-- 상단 바 -->
         <div class="top_bar">
-            <form class="search_container" method="post">
-                <input class="search_icon" type="text" id="searchInput" name="company_name">
-                <button type="submit" class="search_button" id="searchButton">search</button>
-            </form>
+        	<form class="search_container" id="searchForm" onsubmit="return false;">
+		        <input class="search_icon" type="text" id="keyword" name="company_name" placeholder="검색어를 입력하세요">
+		        <button type="button" class="search_button" id="searchButton">search</button>
+		    </form>
             <img class="logo" src="../images/weddingon-logo.png" alt="로고">
             <img class="mypage" src="../images/mypage-icon.png" alt="마이페이지 아이콘">
         </div>
@@ -137,6 +137,9 @@
         const iframe = document.getElementById('contentFrame');
         const logo = document.querySelector('.logo');
         const myPageIcon = document.querySelector('.mypage');
+        
+        const searchButton = document.getElementById('searchButton');
+        const searchInput = document.getElementById('keyword');
 
         menuItems.forEach(item => {
             item.addEventListener('click', () => {
@@ -155,6 +158,20 @@
         myPageIcon.addEventListener('click', () => {
             window.location.href = '../Mypage/mypage.jsp'; // 전체 페이지 이동
         });
+        
+        searchButton.addEventListener('click', () => {
+            const query = searchInput.value.trim();
+
+            if (query === '') {
+                alert('검색어를 입력해주세요.');
+                return;
+            }
+
+            const searchUrl = `../MenuClick/searchResults.jsp?keyword=`+query; // 검색 결과 페이지 URL
+            iframe.src = searchUrl; // iframe에 검색 결과 페이지 로드
+            updateUrlForIframe(searchUrl); // URL에 반영
+        });
+        
     });
 </script>
 
