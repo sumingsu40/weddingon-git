@@ -23,6 +23,9 @@
 	String pageParam = request.getParameter("page");
     System.out.println("page : "+pageParam);
     
+    String searchKeyword = request.getParameter("keyword");
+    System.out.println("keyword:" + searchKeyword);
+    
 	int currentPage = 1; // 기본값
 	if (pageParam != null) {
 	    try {
@@ -47,11 +50,33 @@
         conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
 
         // SQL 쿼리 작성
-        String sql = "SELECT post_id, title, content, user_id, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at " +
-                     "FROM posts ORDER BY created_at DESC LIMIT ? OFFSET ?";
+        String baseSql = "SELECT post_id, title, content, user_id, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') AS created_at " +
+                         "FROM posts ";
+        String whereClause = "";
+        String orderByClause = "ORDER BY created_at DESC ";
+        String limitClause = "LIMIT ? OFFSET ?";
+        
+        if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
+            whereClause = "WHERE title LIKE ? OR content LIKE ? ";
+        }
+        
+        String sql = baseSql + whereClause + orderByClause + limitClause;
+        
+        
         pstmt = conn.prepareStatement(sql);
-        pstmt.setInt(1, postsPerPage); // LIMIT 값 설정
-        pstmt.setInt(2, offset); // OFFSET 값 설정
+        
+        
+        int paramIndex = 1;
+        if (!whereClause.isEmpty()) {
+            pstmt.setString(paramIndex++, "%" + searchKeyword.trim() + "%");
+            pstmt.setString(paramIndex++, "%" + searchKeyword.trim() + "%");
+        }
+        pstmt.setInt(paramIndex++, postsPerPage);
+        pstmt.setInt(paramIndex, offset);
+        
+        
+        //pstmt.setInt(1, postsPerPage); // LIMIT 값 설정
+        //pstmt.setInt(2, offset); // OFFSET 값 설정
 
         rs = pstmt.executeQuery();
 
@@ -67,8 +92,14 @@
             postsArray.put(post);
         }
         
-        String countSql = "SELECT COUNT(*) AS total FROM posts";
+        String countSql = "SELECT COUNT(*) AS total FROM posts " + whereClause;
         countStmt = conn.prepareStatement(countSql);
+
+        if (!whereClause.isEmpty()) {
+            countStmt.setString(1, "%" + searchKeyword.trim() + "%");
+            countStmt.setString(2, "%" + searchKeyword.trim() + "%");
+        }
+        
         countRs = countStmt.executeQuery();
 
         if (countRs.next()) {

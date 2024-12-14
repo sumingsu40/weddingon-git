@@ -69,8 +69,8 @@
         <!-- 상단 바 -->
         <div class="top_bar">
             <form class="search_container" method="post">
-                <input class="search_icon" type="text" name="company_name">
-                <button type="submit" class="search_button">search</button>
+                <input class="search_icon" type="text" id="searchInput" name="company_name">
+                <button type="submit" class="search_button" id="searchButton">search</button>
             </form>
             <img class="logo" src="../images/weddingon-logo.png" alt="로고">
             <img class="mypage" src="../images/mypage-icon.png" alt="마이페이지 아이콘">
