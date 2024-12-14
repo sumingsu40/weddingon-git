@@ -238,7 +238,7 @@
                   <!-- heart-icon 클래스를 추가 -->
                   <img src="../images/<%= isFavorite ? "fullheart.png" : "heart.png" %>" alt="찜 버튼" />
                </div>
-               <img src="../images/share.png" alt="공유 버튼" class="share-icon" />
+               <img src="../images/share.png" alt="공유 버튼" class="share-icon" id="shareButton"/>
             </div>
             <div class="map-container">
                <img src="../images/map-placeholder.png" alt="지도" class="map-image" />
@@ -583,6 +583,24 @@
                }
            });
        });
+
+       
+       document.getElementById('shareButton').addEventListener('click', () => {
+    	    // 현재 페이지의 URL 가져오기
+    	    const currentUrl = window.location.href;
+
+    	    // URL을 클립보드에 복사
+    	    navigator.clipboard.writeText(currentUrl)
+    	        .then(() => {
+    	            // 복사 성공 시 알림
+    	            alert('URL이 클립보드에 복사되었습니다!');
+    	        })
+    	        .catch(err => {
+    	            // 복사 실패 시 알림
+    	            console.error('URL 복사 실패:', err);
+    	            alert('URL 복사에 실패했습니다.');
+    	        });
+    	});
 
 
    
