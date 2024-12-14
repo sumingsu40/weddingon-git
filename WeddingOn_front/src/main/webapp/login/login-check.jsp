@@ -39,13 +39,29 @@
             // 로그인 성공
             int userDbId = rs.getInt("userID");
             String username = rs.getString("name"); // 사용자 이름 가져오기
-            System.out.println("Debugging userId: " + userId);
-            
-            session.setAttribute("userID", userDbId);
+            int isCompany = rs.getInt("is_company"); // 회사 여부 확인 (0: 일반 사용자, 1: 회사)
+            Integer companyId = rs.getObject("company_id") != null ? rs.getInt("company_id") : null; // 기업 ID 가져오기
+
+            session.setAttribute("userDbId", userDbId);
             session.setAttribute("userId", userId); // 세션에 ID 저장
             session.setAttribute("userName", username); // 세션에 사용자 이름 저장
+            session.setAttribute("isCompany", isCompany); // 세션에 회사 여부 저장
+            session.setAttribute("companyId", companyId); // 기업 ID를 세션에 저장
+            
             message = "로그인 성공! 환영합니다, " + username + "님!";
-            response.sendRedirect("../Main-loadmap/index.jsp"); // 메인 페이지로 이동
+
+            System.out.println("userID: " + userDbId);
+            System.out.println("userId: " + userId);
+            System.out.println("username: " + username);
+            System.out.println("isCompany: " + isCompany);
+            System.out.println("companyId: " + companyId);
+
+            // is_company 값에 따라 리다이렉트
+            if (isCompany == 0) {
+                response.sendRedirect("../Main-loadmap/loadmap.jsp"); // 일반 사용자 페이지로 이동
+            } else if (isCompany == 1) {
+                response.sendRedirect("../companyChat/chatList.jsp"); // 회사 페이지로 이동
+            }
         } else {
             // 로그인 실패
             message = "로그인 실패: 아이디 또는 비밀번호가 일치하지 않습니다.";
