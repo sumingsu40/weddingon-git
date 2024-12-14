@@ -10,7 +10,8 @@
 <body>
     <div class="community-container" id="communityContainer">
         <div class="new-post">
-            <input type="text" class="new-post-input" placeholder="원하는 검색어를 입력해주세요">
+            <input type="text" class="new-post-input" id="searchInput" placeholder="원하는 검색어를 입력해주세요">
+            <button id="searchButton">검색</button>
             <img class="new-post-icon" src="../images/edit-icon.png" alt="작성 아이콘">
         </div>
         <div class="post-list" id="postList">
@@ -37,6 +38,13 @@
 	    let totalPages = 0; // 총 페이지 수
 	    let currentGroup = 1; // 현재 페이지 그룹
 	    const buttonsPerGroup = 6; // 한 그룹당 최대 버튼 수
+	    
+	    document.getElementById('searchButton').addEventListener('click', () => {
+	        const searchInput = document.getElementById('searchInput').value.trim();
+	        currentPage = 1; // 검색 시 첫 번째 페이지로 이동
+	        fetchPosts(currentPage, searchInput); // 검색어와 함께 게시글 요청
+	    });
+	    
 	    
 	 	// 페이지 버튼 렌더링
 	    function renderPagination(totalPages) {
@@ -124,9 +132,9 @@
 
 
 	
-	    async function fetchPosts(page) {
+	    async function fetchPosts(page, keyword = '') {
 	        try {
-	            const url = `fetchPosts.jsp?page=`+page;
+	            const url = `fetchPosts.jsp?page=`+page+`&keyword=`+keyword;
 	            console.log("Request URL: ", url); // URL 로그 추가
 	            const response = await fetch(url);
 
