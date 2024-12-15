@@ -181,7 +181,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>웨딩홀 페이지</title>
-<link rel="stylesheet" type="text/css" href="companyClick.css">
+<link rel="stylesheet" type="text/css" href="companyClick.css?v=<%= System.currentTimeMillis() %>">
 </head>
 <body>
 
@@ -229,13 +229,6 @@
                   <img src="../images/<%= isFavorite ? "fullheart.png" : "heart.png" %>" alt="찜 버튼" />
                </div>
                <img src="../images/share.png" alt="공유 버튼" class="share-icon" id="shareButton"/>
-            </div>
-            <div class="map-container">
-               <img src="../images/map-placeholder.png" alt="지도" class="map-image" />
-               <p>
-                  위치 평점: <span id="location-rating"><%= String.format("%.1f", locationRatingAvg) %></span><br /> <span
-                     id="location-description">도심에 위치</span>
-               </p>
             </div>
             <div class="reviews">
                <h3>
@@ -577,6 +570,87 @@
                });
            });
        });
+    
+    
+       document.addEventListener('DOMContentLoaded', () => {
+   	    const tabs = document.querySelectorAll('.tab');
+   	    const sections = document.querySelectorAll('.content-area');
+   	    const tabContainer = document.querySelector('.tabs-container');
+   	    const tabContainerHeight = tabContainer.offsetHeight;
+   	    let isScrolling = false; // 스크롤 중 상태 확인 변수
+   	    // 각 섹션의 ID와 top 위치를 계산
+   	    const sectionOffsets = Array.from(sections).map(section => ({
+   	        id: section.id,
+   	        offsetTop: section.offsetTop - tabContainerHeight - 10 // 탭바 높이와 여백을 고려
+   	    }));
+   	    // 마지막 섹션 보정 처리
+   	    const lastSection = sections[sections.length - 1];
+   	    const lastSectionBottomOffset = lastSection.offsetTop + lastSection.offsetHeight;
+   	    // 탭 클릭 시 스크롤 이동
+   	    tabs.forEach(tab => {
+   	        tab.addEventListener('click', event => {
+   	            event.preventDefault(); // 기본 동작 방지
+   	            isScrolling = true; // 스크롤 이벤트 비활성화
+   	            const target = document.querySelector(tab.getAttribute('data-target'));
+   	            // 탭바 높이 계산
+   	            const menuBarHeight = document.querySelector('.menu_bar')?.offsetHeight || 0;
+   	            const totalOffset = menuBarHeight + tabContainerHeight + 10;
+   	            // 정확한 위치로 스크롤 이동
+   	            const targetOffset = Math.max(target.offsetTop - totalOffset, 0);
+   	            // 모든 탭 비활성화 후 클릭한 탭 활성화
+   	            tabs.forEach(t => t.classList.remove('active'));
+   	            tab.classList.add('active');
+   	            window.scrollTo({
+   	                top: targetOffset,
+   	                behavior: 'smooth'
+   	            });
+   	            // 스크롤이 끝난 후 스크롤 이벤트 활성화
+   	            setTimeout(() => {
+   	                isScrolling = false; // 스크롤 이벤트 활성화
+   	            }, 500); // 애니메이션 시간(500ms) 이후 실행
+   	        });
+   	    });
+   	    // 스크롤 이벤트: 활성 탭 변경
+   	    window.addEventListener('scroll', () => {
+   	        if (isScrolling) return; // 탭 클릭으로 스크롤 중이면 이벤트 중단
+   	        const scrollPosition = window.scrollY + tabContainerHeight + 20;
+   	        // 현재 활성화할 섹션 찾기
+   	        let currentSection = sectionOffsets[0].id; // 기본값
+   	        for (let i = 0; i < sectionOffsets.length; i++) {
+   	            if (scrollPosition >= sectionOffsets[i].offsetTop) {
+   	                currentSection = sectionOffsets[i].id;
+   	            } else {
+   	                break;
+   	            }
+   	        }
+   	        // 마지막 섹션 처리
+   	        if (scrollPosition >= lastSectionBottomOffset - window.innerHeight) {
+   	            currentSection = lastSection.id;
+   	        }
+   	        // 해당 섹션의 탭 활성화
+   	        tabs.forEach(tab => {
+   	            const targetId = tab.getAttribute('data-target').substring(1); // # 제거
+   	            if (targetId === currentSection) {
+   	                tab.classList.add('active');
+   	            } else {
+   	                tab.classList.remove('active');
+   	            }
+   	        });
+   	    });
+   	    // 탭바 고정 처리
+   	    const tabsContainer = document.querySelector('.tabs-container');
+   	    const tabsElement = document.querySelector('.tabs');
+   	    const tabsOffsetTop = tabsContainer.offsetTop;
+   	    window.addEventListener('scroll', () => {
+   	        if (window.scrollY >= tabsOffsetTop) {
+   	            tabsElement.classList.add('sticky-tabs');
+   	            tabsElement.style.top = '0'; // 상단에 고정
+   	        } else {
+   	            tabsElement.classList.remove('sticky-tabs');
+   	            tabsElement.style.top = ''; // 기본 위치 복원
+   	        }
+   	    });
+   	});
 
        // "후기 더보기" 버튼 클릭 시 "후기" 탭으로 이동
        document.getElementById('moreReviewsButton').addEventListener('click', () => {
