@@ -13,7 +13,7 @@
     <h1>채팅목록</h1>
     <div class="chat-list">
         <%
-		    String dbURL = "jdbc:mysql://weddingondb.cni2gssosrpi.ap-southeast-2.rds.amazonaws.com:3306/weddingonDB?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
+        	String dbURL = "jdbc:mysql://weddingon.cjoaqemis3i5.ap-northeast-2.rds.amazonaws.com:3306/weddingon?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
 		    String dbUser = "admin";
 		    String dbPassword = "solution";
 		
@@ -111,6 +111,9 @@
     </div>
     
     <script>
+	    let isChatOpen = false; // 채팅창 상태
+
+    
         function openChat(chatId, receiverId, companyName) {
             const chatPopup = document.getElementById("chatPopup");
             const companyElement = document.getElementById("chatCompanyName");
@@ -140,11 +143,13 @@
 
             // 팝업 표시
             chatPopup.style.transform = "translateX(0)";
+            isChatOpen = true; // 채팅창이 열려 있음
         }
 
         function closeChat() {
             const chatPopup = document.getElementById("chatPopup");
             chatPopup.style.transform = "translateX(100%)"; // 오른쪽으로 숨김
+            isChatOpen = false; // 채팅창이 닫혀 있음
         }
         
         document.getElementById('sendButton').addEventListener('click', () => {
@@ -209,7 +214,12 @@
                 .catch(error => console.error('메시지 로드 실패:', error));
         }
                 
-        setInterval(loadMessages, 2000);
+        setInterval(() => {
+            if (isChatOpen) {
+                loadMessages();
+            }
+        }, 2000);
+
 
     </script>
     

@@ -17,7 +17,7 @@
 
 <%
     // 데이터베이스 연결 정보
-    String dbURL = "jdbc:mysql://weddingondb.cni2gssosrpi.ap-southeast-2.rds.amazonaws.com:3306/weddingonDB?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
+    String dbURL = "jdbc:mysql://weddingon.cjoaqemis3i5.ap-northeast-2.rds.amazonaws.com:3306/weddingon?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
     String dbUser = "admin";
     String dbPassword = "solution";
     
@@ -86,7 +86,6 @@
             <img class="logo" src="../images/weddingon-logo.png">
         </a>
         <div class="d_day"><%=dDayMessage %></div>
-        <img class="logout" src="images/logout-icon.png">
         <a href="logout.jsp">
         	<img class="logout" src="images/logout-icon.png">
         </a>
@@ -94,7 +93,6 @@
     <div class="sidebar">
         <div class="menu_item selected" data-target="like.jsp">관심 업체</div>
         <div class="menu_item" data-target="../chat/chat.jsp">채팅방</div>
-        <div class="menu_item" data-target="../chat/chatPopup.jsp?companyId=1">채팅테스트</div>
         <div class="menu_item" data-target="calendar.html">캘린더</div>
         <div class="menu_item" data-target="mywriting.jsp">내가 쓴 글</div>
         <div class="menu_item" data-target="setting.jsp">개인정보</div> <!-- 개인정보 메뉴 추가 -->
