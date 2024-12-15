@@ -41,35 +41,33 @@ body {
     padding: 20px;
     border-radius: 10px;
     background-color: #FFF;
-    height : 400px;
-}
+    height : 370px;
 
-.reviews {
-    flex: 1; /* 두 번째 섹션의 크기 조정 */
 }
 
 .details h2 {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     font-size: 20px;
     color: #333;
 }
 
 .details p {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     font-size: 14px;
     color: #666;
 }
 
-
 /* 오른쪽 섹션 액션 버튼 */
 .action-buttons {
-     justify-content: space-between; /* 버튼 간 간격을 균등하게 */
+	display: flex;
+    justify-content: space-between; /* 버튼 간 간격을 균등하게 */
     align-items: center; /* 세로 가운데 정렬 */
     gap: 10px; /* 버튼 간격 */
     border: 1px solid #CAC4D0;
     background-color: #FFF;
     padding: 10px; /* 버튼과 박스 경계 간의 여백 */
     border-radius: 10px;
+    height: 80px;
 }
 
 .action-buttons .chat-btn {
@@ -108,32 +106,35 @@ body {
 }
 
 .right-section {
-    width: 39%;
+    width: 39%; 
     max-height: 500px;
     box-sizing: border-box; 
 }
 
 .container2 {
-    display: flex; /* Makes the sections sit side-by-side */
-    justify-content: space-between; /* Adds space between the two sections */
-    gap: 1%; /* Adds consistent spacing between sections */
+    display: flex;
+    justify-content: space-between; /* Space between sections */
+    gap: 1%; /* Consistent spacing between sections */
     margin-top: 15px;
+    align-items: stretch; /* Ensures both sections stretch to the same height */
+    height: 400px; /* Set a consistent height for both sections */
+    max-height: 500px;
 }
 
-
-.map-container,
 .reviews {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #333;
     border: 1px solid #cac4d0;
     border-radius: 10px;
     padding: 10px;
     margin-top: 10px;
     background-color: #ffffff;
+    height: 280px;
 }
 
-.reviews h3 {
-    margin-bottom: 10px;
-    font-size: 16px;
-    color: #333;
+.reviews h3{
+	margin: 10px;
 }
 
 .review-box {
@@ -203,8 +204,6 @@ body {
     z-index: 999;
     background-color: #FFF;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin:0;
-    padding:0 20px;
     border-radius: 0;
 }
 
@@ -223,12 +222,6 @@ body {
     margin-top: 0px;
 }
 
-.map-image {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-}
-
 .chat-btn2 {
     background: #FAD1E3;
     border: none;
@@ -239,14 +232,15 @@ body {
     text-align: center;
 }
 
-/* 시설/서비스 섹션 */
-#facilities {
-    margin-top: 20px;
+.main-content h3{
+	margin-bottom:15px;
 }
 
 .facility-item {
     display: flex; /* flexbox 사용 */
-    align-items: center; /* 이미지와 텍스트 세로 정렬 */
+    align-items: center;/* 이미지와 텍스트 세로 정렬 */
+    margin-top: 10px;
+
     margin-bottom: 10px; /* 각 항목 간 간격 */
 }
 
@@ -490,7 +484,15 @@ button {
     display: inline-block;
     min-width: 70px;
     text-align: center;
+    cursor: pointer;
+    border-radius: 0;
 }
+
+.tab.active {
+    background: #F9BBBB; /* 활성화된 탭 버튼의 배경색 */
+    font-weight: bold;
+}
+
 
 /* 리뷰 내용 */
 .review-content p {
@@ -519,6 +521,7 @@ hr {
     border-top: 1px solid;
     opacity: 0.2;
 }
+
 
 
 
