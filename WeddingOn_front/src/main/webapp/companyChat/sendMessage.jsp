@@ -8,7 +8,7 @@
     JSONObject jsonResponse = new JSONObject();
 
     // 데이터베이스 연결 정보
-    String dbURL = "jdbc:mysql://weddingondb.cni2gssosrpi.ap-southeast-2.rds.amazonaws.com:3306/weddingonDB?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
+    String dbURL = "jdbc:mysql://weddingon.cjoaqemis3i5.ap-northeast-2.rds.amazonaws.com:3306/weddingon?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
     String dbUser = "admin";
     String dbPassword = "solution";
 

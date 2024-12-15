@@ -48,6 +48,7 @@
     <button id="addButton">추가</button>
     <button class="close-button" id="closeButton">닫기</button>
 </body>
+<script src="calendar.js"></script>
 <script>
     // URL에서 날짜 가져오기
     const urlParams = new URLSearchParams(window.location.search);
@@ -86,7 +87,7 @@
 
     // 팝업 닫기 함수
     function closePopup() {
-        window.parent.document.getElementById("popupFrame").classList.add("hidden");
+    	window.parent.location.reload();
     }
 
     // 버튼 클릭 이벤트 연결

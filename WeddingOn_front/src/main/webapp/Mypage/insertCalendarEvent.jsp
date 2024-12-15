@@ -5,7 +5,7 @@
 
 <%
     // 세션에서 userID 가져오기
-    Object userIdObject = session.getAttribute("userID");
+    Object userIdObject = session.getAttribute("userDbId");
     if (userIdObject == null) {
         out.print("오류: 세션이 만료되었습니다. 다시 로그인해주세요.");
         return;
@@ -32,7 +32,7 @@
 
     try {
         // 데이터베이스 연결
-        String dbURL = "jdbc:mysql://weddingondb.cni2gssosrpi.ap-southeast-2.rds.amazonaws.com:3306/weddingonDB?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
+        String dbURL = "jdbc:mysql://weddingon.cjoaqemis3i5.ap-northeast-2.rds.amazonaws.com:3306/weddingon?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
         String dbUser = "admin";
         String dbPassword = "solution";
 

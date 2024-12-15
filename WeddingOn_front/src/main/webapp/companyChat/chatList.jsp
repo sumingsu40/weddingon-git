@@ -9,6 +9,7 @@
     <title>채팅목록</title>
     <link rel="stylesheet" href="chat.css">
     <script>
+    	let isChatOpen = false; // 채팅창 상태
         let currentSenderId; // 현재 선택된 sender_id를 저장할 변수
 
         function openChat(chatId, receiverId, companyName) {
@@ -39,11 +40,13 @@
 
             // 오른쪽 슬라이드 효과로 팝업 표시
             chatPopup.style.transform = "translateX(0)";
+            isChatOpen = true; // 채팅창이 열려 있음
         }
 
         function closeChat() {
             const chatPopup = document.getElementById("chatPopup");
             chatPopup.style.transform = "translateX(100%)"; // 오른쪽으로 숨김
+            isChatOpen = false; // 채팅창이 닫혀 있음
         }
 
         function sendMessage(receiverId) {
@@ -82,14 +85,23 @@
         }
 
         
-        setInterval(loadMessages, 2000);
+        setInterval(() => {
+            if (isChatOpen) {
+                loadMessages();
+            }
+        }, 2000);
     </script>
 </head>
 <body>
     <h1>채팅목록</h1>
+    
+    <a href="../Mypage/logout.jsp">
+   		<img class="logout" src="images/logout-icon.png">
+    </a>
+    
     <div class="chat-list">
         <% 
-            String dbURL = "jdbc:mysql://weddingondb.cni2gssosrpi.ap-southeast-2.rds.amazonaws.com:3306/weddingonDB?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
+        String dbURL = "jdbc:mysql://weddingon.cjoaqemis3i5.ap-northeast-2.rds.amazonaws.com:3306/weddingon?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
             String dbUser = "admin";
             String dbPassword = "solution";
 

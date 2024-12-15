@@ -205,6 +205,12 @@
 	            const result = await response.json();
 	            if (result.status === 'success') {
 	                alert('게시글이 성공적으로 저장되었습니다.');
+	                
+	             	// 글쓰기 팝업 닫기
+	                document.getElementById('writePost').classList.add('hidden');
+	                document.getElementById('communityContainer').classList.remove('shift');
+	                
+	                
 	                fetchPosts(1); // 첫 페이지 새로고침
 	                document.querySelector('.write-post-title').value = '';
 	                document.querySelector('.write-post-text').value = '';
