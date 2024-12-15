@@ -441,63 +441,89 @@
 
 
     <script>
-    function startChat(companyId) {
-        if (!companyId) {
-            alert("회사 정보를 확인할 수 없습니다.");
-            return;
-        }
-
-        // 기존 채팅창 제거
-        let chatContainer = document.getElementById('chatContainer');
-        if (chatContainer) {
-            chatContainer.remove();
-        }
-        
-        
-
-        // 새로운 채팅창 컨테이너 생성
-        chatContainer = document.createElement('div');
-        chatContainer.id = 'chatContainer';
-        chatContainer.style.position = 'fixed';
-        chatContainer.style.bottom = '10px';
-        chatContainer.style.right = '10px';
-        chatContainer.style.width = '400px';
-        chatContainer.style.height = '600px';
-        chatContainer.style.border = '1px solid #ccc';
-        chatContainer.style.borderRadius = '8px';
-        chatContainer.style.backgroundColor = '#fff';
-        chatContainer.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
-        chatContainer.style.zIndex = '1000';
-        chatContainer.style.overflow = 'hidden';
-
-        // 닫기 버튼 추가
-        const closeButton = document.createElement('button');
-        closeButton.innerText = 'X';
-        closeButton.style.position = 'absolute';
-        closeButton.style.top = '5px';
-        closeButton.style.right = '5px';
-        closeButton.style.border = 'none';
-        closeButton.style.backgroundColor = '#f06292';
-        closeButton.style.color = '#fff';
-        closeButton.style.padding = '5px 10px';
-        closeButton.style.borderRadius = '50%';
-        closeButton.style.cursor = 'pointer';
-        closeButton.style.fontSize = '14px';
-        closeButton.onclick = () => chatContainer.remove();
-        chatContainer.appendChild(closeButton);
-
-        // iframe 생성 및 JSP 로드
-        const iframe = document.createElement('iframe');
-        iframe.src = "../chat/chatPopup.jsp?company_id=" + companyId;
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
-        iframe.style.border = 'none';
-        chatContainer.appendChild(iframe);
-
-        // 페이지에 추가
-        document.body.appendChild(chatContainer);
-    }
-
+	    function startChat(companyId) {
+	        if (!companyId) {
+	            alert("회사 정보를 확인할 수 없습니다.");
+	            return;
+	        }
+	
+	        // 기존 채팅창 제거
+	        let chatContainer = document.getElementById('chatContainer');
+	        if (chatContainer) {
+	            chatContainer.remove();
+	        }
+	
+	        // 새로운 채팅창 컨테이너 생성
+	        chatContainer = document.createElement('div');
+	        chatContainer.id = 'chatContainer';
+	        chatContainer.classList.add('chat-popup'); // CSS 클래스 추가
+	        chatContainer.style.position = 'absolute';
+	        chatContainer.style.width = '500px';
+	        chatContainer.style.height = '800px';
+	        chatContainer.style.left = '50px'; 
+	        chatContainer.style.top = '50px';
+	        chatContainer.style.borderRadius = '10px';
+	        chatContainer.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.3)';
+	        chatContainer.style.backgroundColor = '#fce4ec';
+	        chatContainer.style.overflow = 'hidden';
+	        chatContainer.style.zIndex = '1000';
+	
+	        // 헤더 생성
+	        const chatHeader = document.createElement('div');
+	        chatHeader.classList.add('chat-header');
+	        chatHeader.style.backgroundColor = '#f8bbd0';
+	        chatHeader.style.height = '40px';
+	        chatHeader.style.display = 'flex';
+	        chatHeader.style.justifyContent = 'space-between';
+	        chatHeader.style.alignItems = 'center';
+	        chatHeader.style.cursor = 'move';
+	        chatHeader.style.padding = '0 10px';
+	
+	        // 닫기 버튼
+	        const closeButton = document.createElement('button');
+	        closeButton.innerText = 'X';
+	        closeButton.classList.add('close-btn');
+	        closeButton.onclick = () => chatContainer.remove();
+	        chatHeader.appendChild(closeButton);
+	
+	        
+	        // 헤더 추가
+	        chatContainer.appendChild(chatHeader);
+	
+	        // iframe 생성
+	        const iframe = document.createElement('iframe');
+	        iframe.src = "../chat/chatPopup.jsp?company_id=" + companyId;
+	        iframe.style.width = '100%';
+	        iframe.style.height = 'calc(100% - 40px)'; // 헤더 높이를 제외한 영역
+	        iframe.style.border = 'none';
+	        iframe.style.overflowY = 'auto';
+	        iframe.style.overflowX = 'hidden';
+	        chatContainer.appendChild(iframe);
+	
+	        // 페이지에 추가
+	        document.body.appendChild(chatContainer);
+	
+	        // 드래그 기능
+	        let isDragging = false;
+	        let offsetX, offsetY;
+	
+	        chatHeader.addEventListener('mousedown', (e) => {
+	            isDragging = true;
+	            offsetX = e.clientX - chatContainer.getBoundingClientRect().left;
+	            offsetY = e.clientY - chatContainer.getBoundingClientRect().top;
+	        });
+	
+	        document.addEventListener('mousemove', (e) => {
+	            if (isDragging) {
+	                chatContainer.style.left = e.clientX - offsetX + 'px';
+	                chatContainer.style.top = e.clientY - offsetY + 'px';
+	            }
+	        });
+	
+	        document.addEventListener('mouseup', () => {
+	            isDragging = false;
+	        });
+	    }
           
     	document.addEventListener('DOMContentLoaded', () => {
           const heartIcons = document.querySelectorAll('.heart-icon img'); // 모든 하트 아이콘 가져오기
