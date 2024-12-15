@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*"%>
-<%@ page session="true"%>
+<%@ page import="java.sql.*" %>
+<%@ page session="true" %>
 
 <%
     // 세션에서 userID 가져오기
-    Integer userDbId = (Integer) session.getAttribute("userDbId"); 
+    Integer userDbId = (Integer) session.getAttribute("userDbId"); // userID는 Integer로 저장됨
+
     if (userDbId == null) {
         response.sendRedirect("../login/login.jsp");
         return;
@@ -34,6 +35,7 @@
         while (rs.next()) {
             int companyId = rs.getInt("company_id");
             String companyName = rs.getString("company_name");
+
 
             // 회사 정보를 JavaScript 함수로 전달
             likeList.append("<div class='company' onclick=\"goToCompany(").append(companyId).append(")\">")
@@ -70,6 +72,7 @@
 
             // 현재 탭에서 이동
             window.top.location.href = targetUrl;
+
         }
     </script>
 </head>

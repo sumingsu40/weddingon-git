@@ -433,6 +433,7 @@
    </div>
 
 
+
     <script>
     function startChat(companyId) {
         if (!companyId) {
@@ -490,7 +491,6 @@
         // 페이지에 추가
         document.body.appendChild(chatContainer);
     }
-
           
     	document.addEventListener('DOMContentLoaded', () => {
           const heartIcons = document.querySelectorAll('.heart-icon img'); // 모든 하트 아이콘 가져오기
@@ -712,12 +712,9 @@
     	            alert('URL 복사에 실패했습니다.');
     	        });
     	});
-
-
    
    </script>
     
 </body>
 </html>
-
 

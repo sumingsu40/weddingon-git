@@ -42,6 +42,7 @@ body {
     border-radius: 10px;
     background-color: #FFF;
     height : 370px;
+
 }
 
 .details h2 {
@@ -55,7 +56,6 @@ body {
     font-size: 14px;
     color: #666;
 }
-
 
 /* 오른쪽 섹션 액션 버튼 */
 .action-buttons {
@@ -240,6 +240,7 @@ body {
     display: flex; /* flexbox 사용 */
     align-items: center;/* 이미지와 텍스트 세로 정렬 */
     margin-top: 10px;
+
     margin-bottom: 10px; /* 각 항목 간 간격 */
 }
 
@@ -483,7 +484,15 @@ button {
     display: inline-block;
     min-width: 70px;
     text-align: center;
+    cursor: pointer;
+    border-radius: 0;
 }
+
+.tab.active {
+    background: #F9BBBB; /* 활성화된 탭 버튼의 배경색 */
+    font-weight: bold;
+}
+
 
 /* 리뷰 내용 */
 .review-content p {
@@ -512,6 +521,7 @@ hr {
     border-top: 1px solid;
     opacity: 0.2;
 }
+
 
 
 

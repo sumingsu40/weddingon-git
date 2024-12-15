@@ -210,6 +210,7 @@
         }
                 
         setInterval(loadMessages, 2000);
+
     </script>
     
 </body>
