@@ -210,19 +210,6 @@
         }
                 
         setInterval(loadMessages, 2000);
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            const chatInput = document.getElementById('chatInput');
-            const sendButton = document.getElementById('sendButton');
-
-            chatInput.addEventListener('input', () => {
-                if (chatInput.value.trim() !== '') {
-                    sendButton.classList.add('active');
-                } else {
-                    sendButton.classList.remove('active');
-                }
-            });
-        });
 
     </script>
     
