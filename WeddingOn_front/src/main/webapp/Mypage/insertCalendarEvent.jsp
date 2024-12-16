@@ -40,12 +40,11 @@
         conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
 
         // SQL 쿼리 실행
-        String sql = "INSERT INTO user_calendar (user_id, event_title, event_date, event_time) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO user_calendar (user_id, event_title, event_date) VALUES (?, ?, ?)";
         pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, Integer.parseInt(userId)); // userId를 Integer로 변환
         pstmt.setString(2, eventTitle);
         pstmt.setString(3, eventDate);
-        pstmt.setString(4, eventTime);
 
         int rows = pstmt.executeUpdate();
         if (rows > 0) {

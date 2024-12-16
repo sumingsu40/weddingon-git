@@ -6,6 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="icon" href="../images/icon.png">
 <title>Community Post</title>
 <style>
     body {

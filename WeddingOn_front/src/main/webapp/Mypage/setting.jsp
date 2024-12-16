@@ -63,6 +63,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="../images/icon.png">
     <title>회원 정보</title>
     <link rel="stylesheet" type="text/css" href="setting.css">
 </head>

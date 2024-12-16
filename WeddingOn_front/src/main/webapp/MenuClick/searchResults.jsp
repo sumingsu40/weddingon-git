@@ -7,6 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="icon" href="../images/icon.png">
 <title>Search</title>
 <link rel="stylesheet" type="text/css" href="hall.css">
 </head>

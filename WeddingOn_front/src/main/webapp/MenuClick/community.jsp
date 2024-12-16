@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="icon" href="../images/icon.png">
 <title>Community</title>
 <link rel="stylesheet" type="text/css" href="community.css">
 </head>

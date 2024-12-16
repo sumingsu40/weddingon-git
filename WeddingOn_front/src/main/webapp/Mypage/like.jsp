@@ -61,6 +61,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="../images/icon.png">
     <title>관심 업체</title>
     <link rel="stylesheet" type="text/css" href="Like.css">
     <script>
