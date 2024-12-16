@@ -699,20 +699,43 @@
        
        document.getElementById('shareButton').addEventListener('click', () => {
     	    // 현재 페이지의 URL 가져오기
-    	    const currentUrl = window.location.href;
+    	   const currentUrl = window.location.href;
 
-    	    // URL을 클립보드에 복사
-    	    navigator.clipboard.writeText(currentUrl)
-    	        .then(() => {
-    	            // 복사 성공 시 알림
-    	            alert('URL이 클립보드에 복사되었습니다!');
-    	        })
-    	        .catch(err => {
-    	            // 복사 실패 시 알림
-    	            console.error('URL 복사 실패:', err);
-    	            alert('URL 복사에 실패했습니다.');
-    	        });
+    	    // 클립보드 API를 사용할 수 없을 때 fallback 방법
+    	    fallbackCopyTextToClipboard(currentUrl);
     	});
+       
+       function fallbackCopyTextToClipboard(text) {
+    	    // textarea 요소를 생성
+    	    const textArea = document.createElement('textarea');
+    	    textArea.value = text; // 복사할 텍스트 (현재 URL)
+
+    	    // 화면에 숨겨진 상태로 요소를 추가
+    	    textArea.style.position = 'fixed';
+    	    textArea.style.top = '-1000px';
+    	    textArea.style.left = '-1000px';
+    	    document.body.appendChild(textArea);
+
+    	    // 텍스트를 선택하고 복사 실행
+    	    textArea.focus();
+    	    textArea.select();
+
+    	    try {
+    	        const successful = document.execCommand('copy');
+    	        if (successful) {
+    	            alert('URL이 복사되었습니다!');
+    	        } else {
+    	            alert('복사 실패. URL을 수동으로 복사해주세요.');
+    	        }
+    	    } catch (err) {
+    	        console.error('복사 실패:', err);
+    	        alert('복사 중 오류가 발생했습니다.');
+    	    }
+
+    	    // textarea 요소를 삭제
+    	    document.body.removeChild(textArea);
+    	}
+
    
    </script>
     
