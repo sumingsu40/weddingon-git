@@ -6,6 +6,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="../images/icon.png">
     <title>My Writing</title>
     <link rel="stylesheet" type="text/css" href="mywriting.css">
 </head>

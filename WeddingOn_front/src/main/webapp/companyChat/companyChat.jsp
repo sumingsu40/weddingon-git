@@ -20,6 +20,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../images/icon.png">
     <title>기업용 팝업</title>
     <link rel="stylesheet" type="text/css" href="chatPopup.css">
 </head>

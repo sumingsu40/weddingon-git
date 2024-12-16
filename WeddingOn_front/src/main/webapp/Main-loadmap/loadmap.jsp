@@ -6,6 +6,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="../images/icon.png">
     <title>로드맵</title>
     <style>
         @font-face {

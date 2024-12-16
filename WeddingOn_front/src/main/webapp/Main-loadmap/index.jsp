@@ -4,6 +4,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="../images/icon.png">
     <title>index</title>
     <link rel="stylesheet" type="text/css" href="index.css">
     <style>
