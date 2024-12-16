@@ -16,7 +16,7 @@
             const chatPopup = document.getElementById("chatPopup");
             const companyElement = document.getElementById("chatCompanyName");
             const chatBody = document.getElementById("chatBody");
-
+            
             // 채팅방 정보 업데이트
             companyElement.textContent = companyName;
             chatBody.innerHTML = ""; // 기존 대화 초기화
@@ -81,21 +81,46 @@
                 })
                 .catch((error) => console.error("메시지 전송 실패:", error));
         }
+        
+        function loadMessages() {
+            const dataContainer = document.getElementById('dataContainer');
+            const senderId = dataContainer.getAttribute('userid');
+            const companyId = dataContainer.getAttribute('companyid');
+            const chatId = dataContainer.getAttribute('chatid'); // chatId 가져오기
+
+            fetch(`loadMessages.jsp?companyId=`+chatId+`&senderId=`+senderId)
+                .then(response => response.json())
+                .then(data => {
+                    const chatBody = document.getElementById('chatBody');
+                    chatBody.innerHTML = '';
+
+                    data.forEach(message => {
+                        const newMessage = document.createElement('div');
+                        newMessage.className = message.senderType === 0 ? 'chat-message sent' : 'chat-message received';
+                        newMessage.textContent = message.messageText;
+                        chatBody.appendChild(newMessage);
+                    });
+
+                    chatBody.scrollTop = chatBody.scrollHeight;
+                })
+                .catch(error => console.error('메시지 로드 실패:', error));
+        }
 
         
-        setInterval(loadMessages, 2000);
+        //setInterval(loadMessages, 2000);
     </script>
 </head>
 <body>
-    <h1>채팅목록</h1>
-    
-    <a href="../Mypage/logout.jsp">
-	   	<img class="logout" src="images/logout-icon.png">
-   	</a>
+    <div class="chat-header-container">
+	    <div class="chat-title">채팅목록</div>
+	    <a href="../Mypage/logout.jsp">
+	        <img class="logout" src="../images/logout.png">
+	    </a>
+	</div>
     
     <div class="chat-list">
         <% 
-            String dbURL = "jdbc:mysql://weddingondb.cni2gssosrpi.ap-southeast-2.rds.amazonaws.com:3306/weddingonDB?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
+        	String dbURL = "jdbc:mysql://weddingon.cjoaqemis3i5.ap-northeast-2.rds.amazonaws.com:3306/weddingon?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
             String dbUser = "admin";
             String dbPassword = "solution";
 
@@ -106,6 +131,10 @@
 
             try {
                 Integer companyId = (Integer) session.getAttribute("companyId"); // 세션에서 기업 ID 가져오기
+                Integer userDbId = (Integer) session.getAttribute("userDbId");
+                
+                System.out.println("userDB : " + userDbId);
+                
                 if (companyId == null) {
                 	response.sendRedirect("../login/login.jsp");
                     out.println("<p>로그인 후 이용해주세요.</p>");
@@ -115,22 +144,27 @@
                 
 
                 // 채팅목록 조회
-                String sql = "SELECT m.sender_id, " +
-				             "m.chat_id, " +
-				             "(SELECT name FROM users WHERE userID = m.sender_id) AS user_name, " +
-				             "(SELECT message_text FROM messages WHERE chat_id = m.chat_id AND sender_type = 0 ORDER BY sent_at DESC LIMIT 1) AS last_message " +
-				             "FROM messages m " +
-				             "WHERE m.receiver_id = ? AND m.sender_type = 0 " +
-				             "GROUP BY m.sender_id, m.chat_id " +
-				             "ORDER BY MAX(m.sent_at) DESC";
+               String sql = "SELECT m.chat_id, " +
+                             "       m.sender_id, " +
+                             "       (SELECT name FROM users WHERE userID = m.sender_id) AS user_name, " +
+                             "       (SELECT message_text FROM messages WHERE chat_id = m.chat_id AND sender_type = 0 ORDER BY sent_at DESC LIMIT 1) AS last_message " +
+                             "FROM messages m " +
+                             "WHERE m.receiver_id = ? " +
+                             "GROUP BY m.chat_id, m.sender_id " +
+                             "ORDER BY MAX(m.sent_at) DESC";
+
 
 
                 conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
                 pstmt = conn.prepareStatement(sql);
-                pstmt.setInt(1, companyId);
+                pstmt.setInt(1, userDbId); // receiver_id를 userDbId와 비교
+
+                
+                boolean hasData = false;
 
                 rs = pstmt.executeQuery();
                 while (rs.next()) {
+                	hasData = true;
                     int chatId = rs.getInt("chat_id");
                     senderId = rs.getInt("sender_id");
                     String userName = rs.getString("user_name");
@@ -143,6 +177,10 @@
 		</div>
 
         <% 
+                }
+                
+                if (!hasData) {
+                    out.println("<p>채팅 목록이 없습니다.</p>");
                 }
             } catch (Exception e) {
                 e.printStackTrace();

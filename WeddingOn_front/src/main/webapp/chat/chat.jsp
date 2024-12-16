@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <link rel="icon" href="../images/icon.png">
     <title>채팅목록</title>
-    <link rel="stylesheet" href="chat.css">
+    <link rel="stylesheet" type="text/css" href="chat.css?v=<%= System.currentTimeMillis() %>">
 </head>
 <body>
     <h1>채팅목록</h1>
@@ -71,7 +71,6 @@
 		            // JSP 출력
 		%>
 		            <div class="chat_box" onclick="openChat('<%= chatId %>', '<%= userDbId %>', '<%= companyName %>')">
-		                <div class="chat_profile">프로필</div>
 		                <div class="chat_company"><%= companyName %></div>
 		                <div class="chat_message"><%= lastMessage != null ? lastMessage : "메시지가 없습니다." %></div>
 		            </div>

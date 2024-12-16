@@ -20,7 +20,7 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: all 0.3s ease;
-    width: 75%; /* 채팅 박스 전체 너비 */
+    width: 100%; /* 채팅 박스 전체 너비 */
 }
 
 .chat_profile img {

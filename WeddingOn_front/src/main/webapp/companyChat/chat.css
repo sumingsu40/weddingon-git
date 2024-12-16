@@ -20,15 +20,9 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: all 0.3s ease;
-    width: 75%; /* 채팅 박스 전체 너비 */
+    width: 100%; /* 채팅 박스 전체 너비 */
 }
 
-.chat_profile img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%; /* 프로필 이미지를 원형으로 만듦 */
-    margin-right: 15px;
-}
 
 .chat_company {
     font-size: 16px;
@@ -64,6 +58,18 @@ body {
     transform: translateX(100%); /* 기본 숨김 상태 */
 }
 
+/* 채팅 헤더 컨테이너 */
+.chat-header-container {
+    display: flex; /* 수평 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    justify-content: space-between; /* 양 끝으로 정렬 */
+    padding: 10px 20px; /* 여백 설정 */
+    font-size: 24px; /* 텍스트 크기 설정 */
+    font-weight: bold;
+    color: #333;
+    gap: 10px; /* 텍스트와 아이콘 사이 여백 */
+}
+
 /* 팝업 헤더 */
 .chat-header {
     background-color: #f8bbd0;
@@ -83,7 +89,13 @@ body {
     color: #333;
     cursor: pointer;
 }
-
+/* 로그아웃 아이콘 스타일 */
+.logout {
+    width: 30px; /* 아이콘 크기 설정 */
+    height: 30px;
+    cursor: pointer;
+    vertical-align: middle; /* 텍스트와 아이콘 정렬 */
+}
 /* 팝업 본문 */
 .chat-body {
     flex: 1;
