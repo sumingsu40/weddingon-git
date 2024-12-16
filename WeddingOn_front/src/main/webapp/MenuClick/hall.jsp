@@ -9,7 +9,7 @@
 <meta charset="UTF-8">
 <link rel="icon" href="../images/icon.png">
 <title>Hall</title>
-<link rel="stylesheet" type="text/css" href="hall.css">
+    <link rel="stylesheet" type="text/css" href="hall.css?v=<%= System.currentTimeMillis() %>">
 </head>
 <body>
    <div class="hall-container">
@@ -34,7 +34,7 @@
                    int companyId = rs.getInt("company_id"); // company_id를 받아와야 클릭한 기업을 식별 가능
                    String companyName = rs.getString("company_name");
                    String imagePath = rs.getString("image_path"); // DB에 저장된 이미지 경로
-   
+   					
                    // HTML 카드 생성
        %>
        <div class="hall-card">

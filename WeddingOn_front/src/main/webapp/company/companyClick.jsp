@@ -447,51 +447,78 @@
         if (chatContainer) {
             chatContainer.remove();
         }
-        
-        
 
         // 새로운 채팅창 컨테이너 생성
         chatContainer = document.createElement('div');
         chatContainer.id = 'chatContainer';
+        chatContainer.classList.add('chat-popup');
         chatContainer.style.position = 'fixed';
-        chatContainer.style.bottom = '10px';
-        chatContainer.style.right = '10px';
-        chatContainer.style.width = '400px';
-        chatContainer.style.height = '600px';
+        chatContainer.style.width = '400px'; // 팝업창 너비
+        chatContainer.style.height = '550px'; // 팝업창 높이
+        chatContainer.style.backgroundColor = '#fce4ec';
         chatContainer.style.border = '1px solid #ccc';
         chatContainer.style.borderRadius = '8px';
-        chatContainer.style.backgroundColor = '#fff';
-        chatContainer.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
-        chatContainer.style.zIndex = '1000';
+        chatContainer.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.3)';
+        chatContainer.style.zIndex = '9999';
+        chatContainer.style.top = '100px';
+        chatContainer.style.left = '100px';
         chatContainer.style.overflow = 'hidden';
 
-        // 닫기 버튼 추가
-        const closeButton = document.createElement('button');
-        closeButton.innerText = 'X';
-        closeButton.style.position = 'absolute';
-        closeButton.style.top = '5px';
-        closeButton.style.right = '5px';
-        closeButton.style.border = 'none';
-        closeButton.style.backgroundColor = '#f06292';
-        closeButton.style.color = '#fff';
-        closeButton.style.padding = '5px 10px';
-        closeButton.style.borderRadius = '50%';
-        closeButton.style.cursor = 'pointer';
-        closeButton.style.fontSize = '14px';
-        closeButton.onclick = () => chatContainer.remove();
-        chatContainer.appendChild(closeButton);
+        // 헤더 추가
+        const chatHeader = document.createElement('div');
+        chatHeader.classList.add('chat-header');
+        chatHeader.style.height = '40px';
+        chatHeader.style.backgroundColor = '#f8bbd0';
+        chatHeader.style.display = 'flex';
+        chatHeader.style.alignItems = 'center';
+        chatHeader.style.justifyContent = 'flex-start';
+        chatHeader.style.padding = '0 10px';
+        chatHeader.style.cursor = 'move';
 
-        // iframe 생성 및 JSP 로드
+        // 닫기 버튼 추가
+        const closeButton = document.createElement('div');
+        closeButton.innerText = 'X';
+        closeButton.style.color = '#fff';
+        closeButton.style.fontSize = '18px';
+        closeButton.style.cursor = 'pointer';
+        closeButton.style.fontWeight = 'bold';
+        closeButton.onclick = () => chatContainer.remove();
+        chatHeader.appendChild(closeButton);
+
+        // 드래그 기능 추가
+        let offsetX, offsetY, isDragging = false;
+        chatHeader.onmousedown = (e) => {
+            isDragging = true;
+            offsetX = e.clientX - chatContainer.offsetLeft;
+            offsetY = e.clientY - chatContainer.offsetTop;
+            chatContainer.style.zIndex = '10000';
+            document.onmousemove = (e) => {
+                if (isDragging) {
+                    chatContainer.style.left = (e.clientX - offsetX) + 'px';
+                    chatContainer.style.top = (e.clientY - offsetY) + 'px';
+                }
+            };
+            document.onmouseup = () => {
+                isDragging = false;
+                document.onmousemove = null;
+            };
+        };
+
+        // iframe 추가 (팝업에 꽉 차도록 설정)
         const iframe = document.createElement('iframe');
         iframe.src = "../chat/chatPopup.jsp?company_id=" + companyId;
         iframe.style.width = '100%';
-        iframe.style.height = '100%';
+        iframe.style.height = 'calc(100% - 40px)'; // 헤더 높이 제외
         iframe.style.border = 'none';
-        chatContainer.appendChild(iframe);
 
-        // 페이지에 추가
+        // 채팅창 조립
+        chatContainer.appendChild(chatHeader);
+        chatContainer.appendChild(iframe);
         document.body.appendChild(chatContainer);
     }
+
+
+
           
     	document.addEventListener('DOMContentLoaded', () => {
           const heartIcons = document.querySelectorAll('.heart-icon img'); // 모든 하트 아이콘 가져오기

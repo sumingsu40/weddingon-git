@@ -88,7 +88,7 @@
         </a>
         <div class="d_day"><%=dDayMessage %></div>
         <a href="logout.jsp">
-        	<img class="logout" src="images/logout-icon.png">
+        	<img class="logout" src="../images/logout.png">
         </a>
     </div>
     <div class="sidebar">

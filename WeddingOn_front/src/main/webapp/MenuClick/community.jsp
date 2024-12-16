@@ -6,14 +6,14 @@
 <meta charset="UTF-8">
 <link rel="icon" href="../images/icon.png">
 <title>Community</title>
-<link rel="stylesheet" type="text/css" href="community.css">
+<link rel="stylesheet" type="text/css" href="community.css?v=<%= System.currentTimeMillis() %>">
 </head>
 <body>
     <div class="community-container" id="communityContainer">
         <div class="new-post">
             <input type="text" class="new-post-input" id="searchInput" placeholder="원하는 검색어를 입력해주세요">
             <button id="searchButton">검색</button>
-            <img class="new-post-icon" src="../images/edit-icon.png" alt="작성 아이콘">
+            <img class="new-post-icon" src="../images/pencil.png" alt="작성 아이콘">
         </div>
         <div class="post-list" id="postList">
             <!-- 게시물 리스트는 JavaScript로 동적으로 추가 -->
@@ -25,7 +25,6 @@
     <div class="write-post hidden" id="writePost">
         <input type="text" class="write-post-title" placeholder="제목을 입력하세요..." />
         <textarea class="write-post-text" placeholder="내용을 작성하세요..."></textarea>
-        <input type="text" class="write-post-hashtags" placeholder="해시태그를 입력하세요 (예: #웨딩, #드레스)" />
         <div class="button-group">
             <button class="save-btn" id="savePost">저장</button>
             <button class="reset-btn" id="resetPost">초기화</button>
@@ -189,7 +188,7 @@
 	    document.getElementById('savePost').addEventListener('click', async () => {
 	        const title = document.querySelector('.write-post-title').value.trim();
 	        const content = document.querySelector('.write-post-text').value.trim();
-	        const hashtags = document.querySelector('.write-post-hashtags').value.trim();
+ 
 
 	        if (!title || !content) {
 	            alert('제목과 내용을 모두 입력해주세요.');
@@ -200,7 +199,7 @@
 	            const response = await fetch('savePost.jsp', {
 	                method: 'POST',
 	                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-	                body: `title=`+title+`&content=`+content+`&hashtags=`+hashtags
+	                body: `title=`+title+`&content=`+content
 	            });
 
 	            const result = await response.json();
@@ -215,7 +214,6 @@
 	                fetchPosts(1); // 첫 페이지 새로고침
 	                document.querySelector('.write-post-title').value = '';
 	                document.querySelector('.write-post-text').value = '';
-	                document.querySelector('.write-post-hashtags').value = '';
 	            } else {
 	                alert('게시글 저장에 실패했습니다.');
 	            }
@@ -229,7 +227,6 @@
 	    document.getElementById('resetPost').addEventListener('click', () => {
 	        document.querySelector('.write-post-title').value = '';
 	        document.querySelector('.write-post-text').value = '';
-	        document.querySelector('.write-post-hashtags').value = '';
 	    });
 	
 	    // 첫 번째 페이지 데이터 가져오기

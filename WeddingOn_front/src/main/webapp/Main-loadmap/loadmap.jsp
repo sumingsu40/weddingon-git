@@ -10,115 +10,128 @@
     <title>로드맵</title>
     <style>
         @font-face {
-            font-family: 'GowunBatang-Regular';
-            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Regular.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-        }
-        body {
-            font-family: 'GowunBatang-Regular', 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(180deg, rgba(255, 200, 220, 0.9), rgba(255, 230, 240, 0.9));
-            overflow: hidden;
-            position: relative;
-            height: 100vh;
-        }
+    font-family: 'GowunBatang-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 
-        /* 상단 로고 */
-        .logo {
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 180px;
-            height: auto;
-            z-index: 2;
-        }
+body {
+    font-family: 'GowunBatang-Regular', 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(180deg, rgba(255, 200, 220, 0.9), rgba(255, 230, 240, 0.9));
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
 
-        /* 중앙 콘텐츠 컨테이너 */
-        .content {
-            position: absolute;
-            top: 55%; /* 원래 높이로 복원 */
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            z-index: 1;
-            animation: fadeIn 1s ease-out forwards;
-        }
+/* 상단 로고 */
+.logo {
+    position: relative; /* 부모 요소(.content) 기준으로 배치 */
+    margin-bottom: -3vw; /* 문장과의 간격 조정 */
+    width: 12vw; /* 화면 너비에 비례 */
+    max-width: 130px; /* 최대 크기 제한 */
+    height: auto;
+    margin-left: auto; /* 수평 중앙 정렬을 위해 추가 */
+    margin-right: auto;
+    animation: fadeInDown 1.5s ease-out forwards;
+}
+/* 중앙 콘텐츠 컨테이너 */
+.content {
+    width: 100%;
+    max-width: 1200px;
+    text-align: center;
+    position: absolute;
+    top: 50%; /* 화면 중앙에 맞춤 */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
 
-        /* 헤더 텍스트 */
-        .header {
-            font-size: 60px;
-            font-weight: bold;
-            color: #ffffff;
-            text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
-        }
+.header {
+    font-size: 3vw; /* 화면 너비에 비례 */
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 0;
+    margin-top: 1vh; /* 로고와의 간격 추가 */
+}
 
-        .sub-header {
-            margin-top: 20px;
-            font-size: 28px;
-            color: #ffffff;
-            font-style: italic;
-        }
+.sub-header {
+    margin-top: 1vh;
+    font-size: 2vw;
+    color: #ffffff;
+    font-style: italic;
+}
 
-        /* 로드맵 이미지 */
         .loadmap-img {
-            width: 85%;
-            max-width: 750px;
-            height: auto;
-            margin-top: 30px;
-            border-radius: 20px;
-            animation: fadeIn 2s ease-in-out;
-        }
+    width: 70%;
+    height: auto;
+    max-width: 750px;
+    margin-top: 2vh;
+    border-radius: 20px;
+    animation: fadeIn 2s ease-in-out;
+}
 
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
+     @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
 
-        /* 푸터 텍스트 */
         .footer-message {
-            margin-top: 30px;
-            font-size: 32px;
-            color: #ffffff;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
-            font-weight: bold;
-        }
+    margin-top: 2vh;
+    font-size: 2.5vw; /* 화면 너비에 비례 */
+    color: #ffffff;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+}
 
-        /* 버튼 스타일 */
         .start-button {
-            display: inline-block;
-            margin-top: 40px;
-            padding: 15px 30px;
-            font-size: 24px;
-            font-weight: bold;
-            color: #ffffff;
-            background-color: #ff69b4;
-            border: none;
-            border-radius: 25px;
-            text-decoration: none;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            animation: buttonFadeUp 1.5s ease-out forwards;
-        }
+    display: inline-block;
+    margin-top: 3vh;
+    padding: 1.5vh 3vw;
+    font-size: 1.8vw; /* 버튼 텍스트 크기 */
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #ff69b4;
+    border: none;
+    border-radius: 25px;
+    text-decoration: none;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: buttonFadeUp 1.5s ease-out forwards;
+}
 
-        .start-button:hover {
-            background-color: #ff85c0;
-            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
-        }
+.start-button:hover {
+    background-color: #ff85c0;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px); /* 위에서부터 시작 */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); /* 제자리 */
+    }
+}
 
-        @keyframes buttonFadeUp {
-            0% {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            100% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
+@keyframes buttonFadeUp {
+    0% {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
 
         /* 물방울 애니메이션 */
         .wrapper {
@@ -168,8 +181,6 @@
     </style>
 </head>
 <body>
-    <!-- 상단 로고 -->
-    <img class="logo" src="../images/couple.png" alt="로고">
 
     <!-- 물방울 애니메이션 -->
     <div class="wrapper">
@@ -194,6 +205,8 @@
 
     <!-- 중앙 콘텐츠 -->
     <div class="content">
+    <!-- 상단 로고 -->
+    <img class="logo" src="../images/couple.png" alt="로고">
         <div class="header">특별한 여정을 위한 첫 걸음</div>
         <div class="sub-header">당신의 웨딩 여정을 완벽하게 디자인합니다</div>
         <img class="loadmap-img" src="../images/loadmap-icon.png" alt="로드맵 이미지">

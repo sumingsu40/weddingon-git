@@ -41,7 +41,7 @@
             likeList.append("<div class='company' onclick=\"goToCompany(").append(companyId).append(")\">")
                     .append("<div class='profile'>프로필</div>")
                     .append("<div class='name'>").append(companyName).append("</div>")
-                    .append("<div class='like'><img src='images/like-icon.png'></div>")
+                    .append("<div class='like'><img src='../images/fullheart.png'></div>")
                     .append("</div>");
         }
     } catch (Exception e) {
